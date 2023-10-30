@@ -1,0 +1,149 @@
+.App {
+  margin-top: 0px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.home{
+
+  background-color: #D4DAD7;
+  margin-top: 35px;
+  text-align: left;
+  display:flex;
+  justify-content:space-evenly;
+  align-items: safe;
+}
+.rework{
+  background-color: #f1f7f4;
+  margin-top: 40px;
+  text-align: left;
+  display:flex;
+  justify-content:space-evenly;
+  align-items: safe;
+
+}
+
+.rejection{
+  background-color: #f1f7f4;
+  margin-top: 50px;
+  text-align: left;
+  display:flex;
+  justify-content:space-evenly;
+  align-items: safe;
+}
+
+.stackbar-data{
+  background-color: #e7f1ec;
+  text-align: left;
+  display:block ;
+  justify-content:center ;
+}
+.temp{
+  text-align: center;
+  display:block;
+  justify-content: space-around;
+  align-items: start;
+}
+.rpm-data{
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+}
+.flow-data{
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+}
+.gauge-data{
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+}
+.radial-data{
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.App .navbar-brand {
+  font-weight: bold;
+}
+
+.App .container{
+  align-content: center
+}
+
+.logo {
+  height: 40vmin;
+  width: 200;
+  pointer-events: none;
+} 
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+} */
+
+.App-header {
+  background-color: #060708;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #041318;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.my-button {
+  display: my-button;
+  width: 14.2%;
+  border: "black";
+  background-color: #9db7f0;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.machine-utilization{
+  display:block;
+  border:#961212;
+  margin: 0,auto;
+}
+
+.op-rework{
+  display: op-rework;
+  border: #961212;
+  margin: auto;
+  position: relative;
+  vertical-align:bottom;
+}
+
+.barcharts{
+  padding: auto;
+  margin-left: auto;
+
+}
+
+

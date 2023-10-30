@@ -1,0 +1,16 @@
+.current-datetime {  
+  /* border: 1px solid rgb(165, 165, 165); */
+    font-size: 1.2em;
+    display: flex;
+    justify-content: right;
+    right: 20px;
+    padding: 7px;
+    
+    /* box-shadow: 2px 2px 4px rgba(98, 97, 97, 0.4); */
+    /* background-color: rgb(211, 210, 210); */
+    margin-top: 8px;
+
+  }
+  
+  
+  

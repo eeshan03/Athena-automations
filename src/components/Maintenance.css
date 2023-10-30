@@ -1,0 +1,39 @@
+.maintenance-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    height: 400px;
+    width : 250px;
+    font-size: 20px;
+    position: relative;
+  }
+  
+  .currentmaint {
+    align-self: center;
+  }
+
+  .currentmaint {
+    margin-bottom: 100px;
+
+  }
+  .input-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .input-container .input-label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+
+  .mainthead{
+    font-family :Verdana, Geneva, Tahoma, sans-serif
+  }
+  
+  

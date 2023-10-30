@@ -1,0 +1,36 @@
+   .temp-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .current-temp-charts {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .current-temp-chart {
+    width: calc(33.33% - 20px);
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  
+  .past-24h-charts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .past-24h-chart {
+    width: 700px;
+    height: 400px;
+    margin-bottom: 20px;
+  }
+
+  
+  .small-machine-id text {
+    font-size: 15px;
+  }
+  
