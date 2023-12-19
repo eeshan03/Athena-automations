@@ -3,6 +3,7 @@ import axios from 'axios';
 import './drop.css';
 import Sidebar from './SideBar';
 import CurrentDateTime from './timeanddate';
+import { Link } from 'react-router-dom';
 
 const DropdownMenu = ({ options, field, selectedOption, setSelectedOption }) => {
   const handleOptionChange = (e) => {
@@ -103,6 +104,7 @@ const Manager = () => {
     <>
       <Sidebar />
       <CurrentDateTime />
+      <Link to="/DataAnalysis"><button style={{float: 'right', marginRight:'33px'}} className='analysis'>Data Analysis</button></Link>
       <h1 style={{ textAlign: 'center' }}>Manager data</h1>
       <div className="app-container">
         <table className="table" id="mantable">

@@ -1,15 +1,16 @@
 const express = require("express");
 const mysql = require("mysql");
-const cors = require('cors');
+const cors = require("cors");
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 const db = mysql.createConnection({
-  host: '192.168.1.101',
-  user: 'user',
-  password: '1234',
+  host: "192.168.1.101",
+  user: 'khushi',
+  password: "1234",
   port: 3306,
-  database: 'athena'
+  database: "athena",
 });
 // const db = mysql.createConnection({
 //   host: 'localhost',
@@ -17,41 +18,48 @@ const db = mysql.createConnection({
 //   password: 'sid$',
 //   database: 'athena'
 // });
-app.post("/register", (req,res)=>{
+app.post("/register", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  db.query("INSERT INTO users(username,password) values (?,?)",
-  [username,password],
-  (err,result) => {
-    console.log(err);
-  }
-  )
-})
+  db.query(
+    "INSERT INTO users(username,password) values (?,?)",
+    [username, password],
+    (err, result) => {
+      console.log(err);
+    }
+  );
+});
 
-
-app.post("/login", (req,res)=>{
+app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  db.query("SELECT * FROM users WHERE username = ? AND password = ?",
-  [username,password],
-  (err,result) => {
-    if (err) {
-      res.send({err:err});
-    }
+  db.query(
+    "SELECT * FROM users WHERE username = ? AND password = ?",
+    [username, password],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
 
-    if(result.length>0) {
-      res.send(result);
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.send({ message: "Invalid Credentials" });
+      }
     }
-    else{
-      res.send({message: "Invalid Credentials" });
-    }
-  }
   );
 });
 
 
 
-app.listen(3008,() => {
-  console.log("running server on port 3008")
+
+
+
+ 
+
+
+
+app.listen(3008, () => {
+  console.log("running server on port 3008");
 });
 module.exports = app;

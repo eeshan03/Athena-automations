@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.101',
-  user: 'user',
+  user: 'khushi',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -55,6 +55,16 @@ app.get('/Rejection', function(req,res){
   dbConn.query(
     'SELECT * FROM Rejection',
     function(error, result, fields){
+      if(error) throw error;
+      return res.send(JSON.stringify(result));
+    }
+  )
+})
+
+app.get('/DataAnalysis', function(req, res){
+  dbConn.query(
+    'SELECT * FROM LongTermMoving_Analysis',
+    function(error, result, fields) {
       if(error) throw error;
       return res.send(JSON.stringify(result));
     }

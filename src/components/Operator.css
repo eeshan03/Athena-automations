@@ -150,6 +150,45 @@ th {
   z-index: 1;
 }
 
+.settingtable-wrapper button{
+  padding: 2px;
+  width: 150px;
+  font-size: 20px;
+  margin: 10px;
+  margin-left: 10%;
+}
+.shifttable-button{
+  color: white;
+}
+.operator-wrapper button {
+  padding: 2px;
+  width: 150px;
+  font-size: 20px;
+  margin: 10px;
+  margin-left: 90%;
+}
+.nav-bar{
+  height: 50px;
+  background-color: #C62828;
+  margin-left: 3px;
+  margin-top: 1%;
+  width: 35%;
+  border-radius: 10px;
+}
+
+.child-div1 {
+  display: flex;
+}
+.div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.child-div {
+  width: 30%;
+  margin-top: 1%;
+}
+
 .shifttable-container {
   position: absolute;
   top: 50%;

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-email/render": "^0.0.9",
     "@react-spring/web": "^9.6.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -13,6 +14,8 @@
     "framer-motion": "^9.1.6",
     "my-sql": "^1.2.15",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.9.7",
+    "postmark": "^3.1.2",
     "re-resizable": "^6.9.9",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

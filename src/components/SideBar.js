@@ -6,7 +6,7 @@ import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
 import './resizing.css'
-import Image from 'react-image-resizer';
+import ImageResizer from 'react-image-resizer';
 import logo from '../images/logo.png'
 
 const Nav = styled.div`
@@ -51,7 +51,7 @@ const showSidebar = () => setSidebar(!sidebar);
 
 return (
 	<>
-	<Image
+	<ImageResizer
           img src={logo} alt="logo" class="right"
            height={90}
            width={200}
