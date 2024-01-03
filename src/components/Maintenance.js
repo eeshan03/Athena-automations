@@ -1,6 +1,6 @@
 import React, { useState , useRef} from 'react';
 import './resizing.css';
-import Sidebar from './SideBar';
+import Header from './Header';
 import CurrentDateTime from './timeanddate';
 
 const Maintenance = () => {
@@ -19,7 +19,7 @@ const Maintenance = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
       <CurrentDateTime />
 
       <div className="mainthead">

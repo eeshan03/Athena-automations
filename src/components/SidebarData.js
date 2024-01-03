@@ -80,5 +80,10 @@ export const SidebarData = [
 		engineering
 		</span>,
 	},
+	{
+		title: "Create User",
+		path: "/createuser",
+		icon: <i class="fa-solid fa-user"></i>,
+	},
 	];
 	

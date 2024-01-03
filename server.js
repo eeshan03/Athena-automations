@@ -7,27 +7,10 @@ app.use(express.json());
 app.use(cors());
 const db = mysql.createConnection({
   host: "192.168.1.101",
-  user: 'khushi',
+  user: 'Dhruv',
   password: "1234",
   port: 3306,
   database: "athena",
-});
-// const db = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'sid$',
-//   database: 'athena'
-// });
-app.post("/register", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  db.query(
-    "INSERT INTO users(username,password) values (?,?)",
-    [username, password],
-    (err, result) => {
-      console.log(err);
-    }
-  );
 });
 
 app.post("/login", (req, res) => {
@@ -49,15 +32,6 @@ app.post("/login", (req, res) => {
     }
   );
 });
-
-
-
-
-
-
- 
-
-
 
 app.listen(3008, () => {
   console.log("running server on port 3008");

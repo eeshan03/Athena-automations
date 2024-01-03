@@ -1,0 +1,48 @@
+.create-user-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .create-user-container h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .create-user-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-user-container label {
+    margin-bottom: 10px;
+  }
+  
+  .create-user-container input,
+  .create-user-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .create-user-container button {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .create-user-container button:hover {
+    background-color: #45a049;
+  }
+  
+  .create-user-container .status {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+  }
+  

@@ -20,11 +20,14 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.101',
-  user: 'khushi',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
 });
+
+
+
 
 // connect to database
 dbConn.connect();
@@ -50,6 +53,59 @@ app.get('/Rework', function(req,res){
     }
   )
 })
+
+app.get('/checkuser/:username', function (req, res) {
+  const username = req.params.username;
+
+  dbConn.query(
+    'SELECT COUNT(*) AS count FROM users WHERE username = ?',
+    [username],
+    function (error, results, fields) {
+      if (error) {
+        console.error('Error checking username:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        const count = results[0].count;
+        const exists = count > 0;
+        res.status(200).json({ exists: exists });
+      }
+    }
+  );
+});
+
+app.post('/createuser', (req, res) => {
+  const { username, password, role } = req.body;
+
+  // Insert the new user into the database
+  const createUserSql = 'INSERT INTO user (username, password, role) VALUES (?, ?, ?)';
+  const checkUserSql = 'SELECT COUNT(*) AS count FROM user WHERE username = ?';
+
+  // Check if the username already exists
+  dbConn.query(checkUserSql, [username], (checkError, checkResults) => {
+    if (checkError) {
+      console.error('Error checking username:', checkError);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      const count = checkResults[0].count;
+      if (count > 0) {
+        res.status(400).json({ error: 'Username already exists. Please choose a different username.' });
+      } else {
+        // If the username doesn't exist, proceed to create the user
+        dbConn.query(createUserSql, [username, password, role], (createError, createResult) => {
+          if (createError) {
+            console.error('Error creating user:', createError);
+            res.status(500).json({ error: 'Internal Server Error' });
+          } else {
+            console.log('User created successfully');
+            res.status(201).json({ message: 'User created successfully' });
+          }
+        });
+      }
+    }
+  });
+});
+
+
 
 app.get('/Rejection', function(req,res){
   dbConn.query(

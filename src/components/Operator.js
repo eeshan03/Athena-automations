@@ -3,10 +3,10 @@ import axios from "axios";
 import CurrentDateTime from "./timeanddate";
 import "./Operator.css";
 import { motion } from "framer-motion/dist/framer-motion";
-import Sidebar from "./SideBar";
 // import nodemailer from "nodemailer";
 import nodemailer from "nodemailer"; // Adjust the path if necessary
 import { Link } from "react-router-dom";
+import Header from './Header'
 
 const DropdownMenu = ({
   options,
@@ -328,7 +328,7 @@ const Operator = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
       <div className="div">
         <div className="nav-bar">
           <div className="child-div1">

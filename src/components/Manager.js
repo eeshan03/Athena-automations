@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './drop.css';
-import Sidebar from './SideBar';
+import Header from './Header';
 import CurrentDateTime from './timeanddate';
 import { Link } from 'react-router-dom';
 
@@ -102,7 +102,7 @@ const Manager = () => {
 
   return (
     <>
-      <Sidebar />
+      <Header />
       <CurrentDateTime />
       <Link to="/DataAnalysis"><button style={{float: 'right', marginRight:'33px'}} className='analysis'>Data Analysis</button></Link>
       <h1 style={{ textAlign: 'center' }}>Manager data</h1>

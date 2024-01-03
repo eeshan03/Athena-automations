@@ -13,6 +13,7 @@ import Vibration from "./components/Vibration";
 import Operator from "./components/Operator";
 import Maintenance from "./components/Maintenance";
 import Manager from "./components/Manager";
+import CreateUser from "./components/CreateUser";
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,6 +27,8 @@ function App() {
   return (
     <div className="app">
       <Routes>
+
+      <Route path="/createuser" element={<CreateUser />} />
         <Route exact path="/" element={<Login />} />
         <Route path="/Temperature" element={<Temperature />} />
         <Route path="/pressure" element={<Pressure />} />

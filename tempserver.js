@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.101',
-  user: 'khushi',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -44,23 +44,7 @@ app.get('/machineid', function (req, res) {
 });
 
 
-// // Update frequency endpoint
-// app.put("/api/update-frequencies", (req, res) => {
-//   const { machineID, column, value } = req.body;
-//   // Construct SQL query
-//   const sql = `UPDATE Frequency SET ${column} = ? WHERE Machine_ID = ?`;
-//   const values = [value, machineID];
 
-//   // Execute SQL query
-//   dbConn.query(sql, values, (err, result) => {
-//     if (err) throw err;
-//     console.log("Value updated successfully");
-//     res.send(result);
-//   });
-// });
-
-
-// get temperature data from last 24 hours for a specific machine
 app.get('/temperature/past24h/:machineId', function (req, res) {
   const twentyFourHoursAgo = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
   const machineId = req.params.machineId;
