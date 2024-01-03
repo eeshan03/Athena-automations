@@ -77,8 +77,8 @@ app.post('/createuser', (req, res) => {
   const { username, password, role } = req.body;
 
   // Insert the new user into the database
-  const createUserSql = 'INSERT INTO user (username, password, role) VALUES (?, ?, ?)';
-  const checkUserSql = 'SELECT COUNT(*) AS count FROM user WHERE username = ?';
+  const createUserSql = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+  const checkUserSql = 'SELECT COUNT(*) AS count FROM users WHERE username = ?';
 
   // Check if the username already exists
   dbConn.query(checkUserSql, [username], (checkError, checkResults) => {
