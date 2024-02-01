@@ -131,4 +131,8 @@ app.listen(3010, function () {
 console.log('Node app is running on port 3010');
 })
 
+<<<<<<< HEAD
 module.exports = app;
+=======
+module.exports = app;
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9

@@ -25,6 +25,7 @@ connection.connect((err) => {
   }
 });
 
+<<<<<<< HEAD
 app.post('/api/leave_data', (req, res) => {
   const data = req.body;
   console.log('Received leave data:', data);
@@ -42,11 +43,17 @@ app.post('/api/leave_data', (req, res) => {
     }
   });
 });
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
 
 // Define the API endpoint to fetch data from the 'manager_data' table
 app.get('/api/displaytable', (req, res) => {
   // SQL query to select all rows from the 'manager_data' table
+<<<<<<< HEAD
   const query = 'SELECT name, machine_no, opn_no, time_taken, parts_produced, machine FROM manager_data';
+=======
+  const query = 'SELECT name, part_no, opn_no, machine FROM manager_data';
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
 
   // Execute the query
   connection.query(query, (error, results) => {
@@ -78,8 +85,15 @@ app.post('/api/lower_table', (req, res) => {
   });
 });
 
+<<<<<<< HEAD
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+=======
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9

@@ -6,8 +6,12 @@ import { motion } from "framer-motion/dist/framer-motion";
 // import nodemailer from "nodemailer";
 import nodemailer from "nodemailer"; // Adjust the path if necessary
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import Header from "./Header";
 import LeaveForm from "./leave-form";
+=======
+import Header from './Header'
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
 
 const DropdownMenu = ({
   options,
@@ -71,9 +75,12 @@ const Operator = () => {
   const [maintenanceList, setMaintenanceList] = useState([]);
   const [showShifttable, setShowShifttable] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+<<<<<<< HEAD
   const [isLeaveModalOpen, setLeaveModalOpen] = useState(false);
   const [isShiftModalOpen, setShiftModalOpen] = useState(false);
   const [isFeedbackModalOpen, setFeedbackModalOpen] = useState(false);
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
   const contentRef = useRef(null);
   const timerRef = useRef(null);
   const [data, setData] = useState([]);
@@ -189,11 +196,16 @@ const Operator = () => {
     { id: 1, field: "operator_name" },
     { id: 2, field: "shift" },
     { id: 3, field: "machine_name" },
+<<<<<<< HEAD
     { id: 4, field: "machine_number" },
+=======
+    { id: 4, field: "part_number" },
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
     { id: 5, field: "operation_number" },
   ];
 
   const dropdownMenusLower = [
+<<<<<<< HEAD
     { id: 8, field: "ok_parts" },
     { id: 7, field: "parts_reworked" },
     { id: 6, field: "parts_rejected" },
@@ -201,6 +213,13 @@ const Operator = () => {
     { id: 10, field: "rework_reasons" },
     { id: 11, field: "rejection_reasons" },
     { id: 12, field: "downtime_reasons" },
+=======
+    { id: 6, field: "parts_rejected" },
+    { id: 7, field: "parts_reworked" },
+    { id: 8, field: "ok_parts" },
+    { id: 9, field: "downtime" },
+    { id: 10, field: "reasons" },
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
   ];
 
   // const nodemailer = require('nodemailer');
@@ -249,6 +268,7 @@ const Operator = () => {
   const handleButtonClick = () => {
     setShowShifttable((prevShowShifttable) => !prevShowShifttable);
   };
+<<<<<<< HEAD
   const handleLeaveButtonClick = () => {
     setLeaveModalOpen(!isLeaveModalOpen);
   };
@@ -269,6 +289,8 @@ const Operator = () => {
   const handleCloseButtonFeedback = () => {
     setFeedbackModalOpen(false);
   }; 
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
 
   const handleSendMaintenanceEmail = async () => {
     const message = window.prompt("Enter your message for maintenance:");
@@ -280,7 +302,11 @@ const Operator = () => {
     // const emailSubject = "Maintenance Request";
     // const emailAddress = "kiranmogal0309@gmail.com";
     // const mailToUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
+<<<<<<< HEAD
     // emailSubject
+=======
+    //   emailSubject
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
     // )}&body=${encodeURIComponent(message)}`;
 
     // Open the user's default email client with a pre-filled email
@@ -354,6 +380,39 @@ const Operator = () => {
 
   return (
     <>
+<<<<<<< HEAD
+=======
+      <Header />
+      <div className="div">
+        <div className="nav-bar">
+          <div className="child-div1">
+            <Link to="/setting">
+              <div className="settingtable-wrapper">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className={`shifttable-button ${isHovered ? "hovered" : ""}`}
+                >
+                  setting mode
+                </motion.button>
+              </div>
+            </Link>
+            <div className="operator-wrapper">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`shifttable-button ${isHovered ? "hovered" : ""}`}
+              >
+                operation mode
+              </motion.button>
+            </div>
+          </div>
+        </div>
+        <div className="child-div">
+          <CurrentDateTime />
+        </div>
+      </div>
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
       <div className="Operator-data">
         <div className="ophead">
           <h1 style={{ textAlign: "center" }}>Operator Data</h1>
@@ -366,20 +425,29 @@ const Operator = () => {
       <div
         style={{
           display: "flex",
+<<<<<<< HEAD
           justifyContent: "center",
           alignItems: "center",
           // height: '100vh'
           // marginRight: "15px",
+=======
+          justifyContent: "right",
+          marginRight: "15px",
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
         }}
       >
         <div className="shifttable-wrapper">
           <motion.button
+<<<<<<< HEAD
             style={{ marginRight: "40px" }}
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`shifttable-button ${isHovered ? "hovered" : ""}`}
             onMouseEnter={handleToggleHover}
             onMouseLeave={handleToggleHover}
+<<<<<<< HEAD
             onClick={handleLeaveButtonClick}
           >
             LEAVE
@@ -605,31 +673,175 @@ const Operator = () => {
                 onClick={handleButtonClick}
               />
             </div>
+=======
+            onClick={handleButtonClick}
+          >
+            SHIFTS
+          </motion.button>
+          {isHovered && (
+            <motion.div
+              className={`shifttable-container ${isHovered ? "visible" : ""}`}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              ref={contentRef}
+            >
+              <table className="shift-table">
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Shift No.</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Break Start</th>
+                  <th>Break End</th>
+                  <th>Remarks</th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>7:30 AM</td>
+                    <td>4:00 PM</td>
+                    <td>11:30 AM</td>
+                    <td>12 NOON</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>4:00 PM</td>
+                    <td>12:30 AM</td>
+                    <td>8:00 PM</td>
+                    <td>8:30 PM</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>12:30 AM</td>
+                    <td>7:30 AM</td>
+                    <td>8:00 PM</td>
+                    <td>8:30 PM</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>8:30 AM</td>
+                    <td>5:00 PM</td>
+                    <td>12:30 PM</td>
+                    <td>1:00 PM</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>8:00 PM</td>
+                    <td>4:30 AM</td>
+                    <td>12.00 MIDNIGHT</td>
+                    <td>12:30 AM</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>12:00 NOON</td>
+                    <td>8:30 PM</td>
+                    <td>4:00 PM</td>
+                    <td>4:30 PM</td>
+                    <td>Regular Shift</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>11</td>
+                    <td>4:00 PM</td>
+                    <td>8:00 PM</td>
+                    <td>4:00 PM</td>
+                    <td>4:15 PM</td>
+                    <td>Only for Overtime after Shift No 1</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>12</td>
+                    <td>12:30 AM</td>
+                    <td>4:30 AM</td>
+                    <td>12:30 AM</td>
+                    <td>12:45 AM</td>
+                    <td>Only for Overtime after Shift No 2</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>14</td>
+                    <td>5:00 PM</td>
+                    <td>7:00 PM</td>
+                    <td>5:00 PM</td>
+                    <td>5:15 PM</td>
+                    <td>Only for Overtime after Shift No 4</td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>4:30 AM</td>
+                    <td>7:30 AM</td>
+                    <td>4:30 AM</td>
+                    <td>4:45 AM</td>
+                    <td>Only for Overtime after Shift No 5</td>
+                  </tr>
+                  <tr>
+                    <td>11</td>
+                    <td>16</td>
+                    <td>8:30 PM</td>
+                    <td>12:30 PM</td>
+                    <td>8:30 PM</td>
+                    <td>8:45 PM</td>
+                    <td>Only for Overtime after Shift No 6</td>
+                  </tr>
+                </tbody>
+              </table>
+            </motion.div>
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
           )}
         </div>
       </div>
 
+<<<<<<< HEAD
+=======
+      <div></div>
+
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
       <div className="app-container">
         <table className="table" id="upperTable">
           <thead>
             <tr>
               <th>Name</th>
+<<<<<<< HEAD
               <th>Machine No</th>
               <th>Opn No</th>
               <th>Machine</th>
               <th>Qty.</th>
               <th>Time</th>
+=======
+              <th>Part No</th>
+              <th>Opn No</th>
+              <th>Machine</th>
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
             </tr>
           </thead>
           <tbody>
             {data.map((row, index) => (
               <tr key={index}>
                 <td>{row.name}</td>
+<<<<<<< HEAD
                 <td>{row.machine_no}</td>
                 <td>{row.opn_no}</td>
                 <td>{row.machine}</td>
                 <td>{row.parts_produced}</td>
                 <td>{row.time_taken}</td>
+=======
+                <td>{row.part_no}</td>
+                <td>{row.opn_no}</td>
+                <td>{row.machine}</td>
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
               </tr>
             ))}
           </tbody>
@@ -642,6 +854,24 @@ const Operator = () => {
               {dropdownMenusLower.map(({ id, field }) => (
                 <th key={id}>{field}</th>
               ))}
+<<<<<<< HEAD
+=======
+              <th colSpan="2">
+                <button
+                  style={{
+                    padding: "6px 12px",
+                    fontSize: "14px",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s",
+                  }}
+                  onClick={handleAddClickLower}
+                >
+                  Add
+                </button>
+              </th>
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
             </tr>
           </thead>
           <tbody>
@@ -664,7 +894,11 @@ const Operator = () => {
                 <td>
                   <button
                     style={{
+<<<<<<< HEAD
                       padding: "20px 10px",
+=======
+                      padding: "6px 12px",
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
                       fontSize: "14px",
                       backgroundColor: "#dc3545",
                       color: "#fff",
@@ -681,6 +915,7 @@ const Operator = () => {
               </tr>
             ))}
           </tbody>
+<<<<<<< HEAD
           <tfoot>
             <tr>
               <td colSpan={dropdownMenusLower.length + 1}>
@@ -700,10 +935,13 @@ const Operator = () => {
               </td>
             </tr>
           </tfoot>
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
         </table>
       </div>
 
       <div
+<<<<<<< HEAD
         className="optable"
         ref={contentRef}
         style={{ marginBottom: "100px" }}
@@ -785,6 +1023,100 @@ const Operator = () => {
         </table>
       </div>
 
+=======
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "10px",
+          marginTop: "10px",
+          marginLeft: "100px",
+          marginRight: "100px",
+        }}
+      >
+        <span style={{ margin: "0 10px" }}></span>
+        <button
+          className="maintbutton"
+          onClick={handleMaintenanceClick}
+          style={{ backgroundColor: "#C62828", color: "white" }}
+        >
+          Maintenance
+        </button>
+      </div>
+
+      {showMaintenanceTable && (
+        <div
+          className="optable"
+          ref={contentRef}
+          style={{ marginBottom: "100px" }}
+        >
+          <table>
+            <tr>
+              <th>Machine Name</th>
+              <th>Symptoms of the problem</th>
+              <th>Part Number</th>
+              <th>Machine Status</th>
+            </tr>
+            <tr>
+              <td>
+                <select value={selectedMachine} onChange={handleMachineChange}>
+                  <option value="">Select a machine</option>
+                  <option value="Machine 1">Machine 1</option>
+                  <option value="Machine 2">Machine 2</option>
+                  <option value="Machine 3">Machine 3</option>
+                  {/* Add more options as needed */}
+                </select>
+              </td>
+              <td>
+                <select
+                  value={symptomMachine}
+                  onChange={handlesymptomMachineChange}
+                >
+                  <option value="">Select symptoms you notice</option>
+                  <option value="No Power">No Power</option>
+                  <option value="Strange Noise">Strange Noise</option>
+                  <option value="Overheating">Overheating</option>
+                  {/* Add more options as needed */}
+                </select>
+              </td>
+              <td>
+                <select value={PartMachine} onChange={handlePartMachineChange}>
+                  <option value="">Select Part No. of the Machine</option>
+                  <option value="Part 1"> 1</option>
+                  <option value="Part 2"> 2</option>
+                  <option value="Part 3"> 3</option>
+                  {/* Add more options as needed */}
+                </select>
+              </td>
+              <td>
+                <select
+                  value={StatusMachine}
+                  onChange={handleStatusMachineChange}
+                >
+                  <option value="">Select Machine Status</option>
+                  <option value="Working">Working</option>
+                  <option value="Not Working">Not Working</option>
+                  {/* Add more options as needed */}
+                </select>
+              </td>
+              <td>
+                <button onClick={handleSendMaintenanceEmail}>
+                  Send for Maintenance
+                </button>
+              </td>
+            </tr>
+            {/* Additional rows */}
+            {maintenanceList.map((item, index) => (
+              <tr key={index}>
+                <td>{item.machine}</td>
+                <td>{item.symptom}</td>
+                <td>{item.part}</td>
+                <td>{item.status}</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      )}
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
       <div
         style={{
           position: "fixed",
@@ -803,4 +1135,7 @@ const Operator = () => {
 };
 
 export default Operator;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6639066b1b488db793fef7b50f7238243cb3c4c9
