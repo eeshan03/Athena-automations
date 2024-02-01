@@ -1,0 +1,68 @@
+.maintenance-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  height: 400px;
+  width : 250px;
+  font-size: 20px;
+  position: relative;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.currentmain {
+  display: flex;
+  justify-content: center;
+}
+
+.maintenancetable {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 20px;
+}
+
+/* .input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+} */
+
+.input-box {
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+.input-box label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.input-box input:focus {
+  border-color: #5e2b2b;
+}
+
+/* Optional: Add a subtle box shadow to the input box */
+.input-box input:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.mainthead{
+  font-family :Verdana, Geneva, Tahoma, sans-serif
+}

@@ -1,0 +1,17 @@
+.sensor1, .vibration2-data{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  margin-left: 20px;
+  background-color: #646665;
+  width: 300px;
+  height: 200px;
+  border-radius: 1rem;
+  color: white;
+  padding: 1rem;
+}
+
+/* .sensor1-charts{
+    align-items: center;
+    align-content: center;
+} */
