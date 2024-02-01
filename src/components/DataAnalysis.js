@@ -168,6 +168,16 @@ const DataAnalysis = () => {
           />
           <Line type="monotone" dataKey="R_val" stroke="#82ca9d" />
         </LineChart> */}
+        <Link to="/manager">
+          <button
+            style={{ marginLeft: "33px", marginTop: "33px", width: "100px" }}
+            className="analysis"
+            onClick={handleDataAnalysis}
+          >
+            Close
+          </button>
+          <br />
+        </Link>
         <Link to="/DataAnalysis">
           <button
             style={{ marginLeft: "33px", marginTop: "33px", width: "150px" }}
