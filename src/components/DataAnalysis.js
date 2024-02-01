@@ -1,4 +1,3 @@
-import Sidebar from "./SideBar";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion/dist/framer-motion";
 import { Link } from "react-router-dom";
@@ -141,7 +140,6 @@ const DataAnalysis = () => {
 
   return (
     <>
-      <Sidebar />
 
       <div>
         {/* <LineChart
