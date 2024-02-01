@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion/dist/framer-motion";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "./SideBar";
 import { PureComponent } from "react";
 import {
   LineChart,
@@ -140,7 +141,7 @@ const DataAnalysis = () => {
 
   return (
     <>
-
+    <Sidebar />
       <div>
         {/* <LineChart
           width={500}
