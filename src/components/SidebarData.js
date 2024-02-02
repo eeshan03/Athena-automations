@@ -76,9 +76,7 @@ export const SidebarData = [
 	{
 		title: "Operator",
 		path: "/operator",
-		icon: <span class="material-symbols-outlined">
-		engineering
-		</span>,
+		icon: <span class="material-symbols-outlined">engineering</span>,
 	},
 	{
 		title: "Create User",

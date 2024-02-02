@@ -73,7 +73,6 @@ const Operator = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLeaveModalOpen, setLeaveModalOpen] = useState(false);
   const [isShiftModalOpen, setShiftModalOpen] = useState(false);
-  const [isFeedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const contentRef = useRef(null);
   const timerRef = useRef(null);
   const [data, setData] = useState([]);
@@ -257,18 +256,14 @@ const Operator = () => {
     setShiftModalOpen(!isShiftModalOpen);
   };
 
-  const handleFeedbackButtonClick = () => {
-    setFeedbackModalOpen(!isFeedbackModalOpen);
-  };
+
   const handleCloseButtonLeave = () => {
     setLeaveModalOpen(false);
   };
   const handleCloseButtonShift = () => {
     setShiftModalOpen(false);
   };
-  const handleCloseButtonFeedback = () => {
-    setFeedbackModalOpen(false);
-  }; 
+
 
   const handleSendMaintenanceEmail = async () => {
     const message = window.prompt("Enter your message for maintenance:");
@@ -362,7 +357,7 @@ const Operator = () => {
           Daily production report & Machine details
         </p>
       </div>
-
+    <br/>
       <div
         style={{
           display: "flex",
@@ -559,54 +554,7 @@ const Operator = () => {
             </div>
           )}
         </div>
-        <div className="shifttable-wrapper">
-          <motion.button
-            style={{ marginRight: "40px" }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className={`shifttable-button ${isHovered ? "hovered" : ""}`}
-            onMouseEnter={handleToggleHover}
-            onMouseLeave={handleToggleHover}
-            onClick={handleFeedbackButtonClick}
-          >
-            FEEDBACK
-          </motion.button>
-          {isFeedbackModalOpen && (
-            <div className="shifttable-modal">
-              <motion.div
-                className="shifttable-container"
-                initial={{ opacity: 0, scale: 0.9, y: "10%", x: "80%" }}
-                animate={{ opacity: 1, scale: 1, y: "10%", x: "80%" }}
-                transition={{ duration: 0.5 }}
-              >
-                <button
-                  className="close-button"
-                  onClick={handleCloseButtonFeedback}
-                >
-                  Close
-                </button>
-                <iframe
-                  title="Feedback Form"
-                  src="https://docs.google.com/forms/d/e/1FAIpQLSdf4RgPbdfvrF4YFGFp9HzBxQNcdGaU7wfFvlnvGSjbCREShA/viewform?embedded=true"
-                  width="640"
-                  height="800"
-                  frameBorder="0"
-                  marginHeight="0"
-                  marginWidth="0"
-                  style={{ border: "none", width: "100%" }}
-                >
-                  Loading…
-                </iframe>
-              </motion.div>
-              <motion.div
-                className="backdrop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.7 }}
-                onClick={handleButtonClick}
-              />
-            </div>
-          )}
-        </div>
+        
       </div>
 
       <div className="app-container">
