@@ -22,6 +22,7 @@ import {
 } from "react-router-dom";
 import SettingMode from "./components/SettingMode";
 import DataAnalysis from "./components/DataAnalysis";
+import LeaveManagerData from "./components/leaveManagerData";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/manager" element={<Manager />} />
         <Route path="/setting" element={<SettingMode />} />
         <Route path="/dataAnalysis" element={<DataAnalysis />} />
+        <Route path="/LeaveData" element={<LeaveManagerData />} />
       </Routes>
     </div>
   );

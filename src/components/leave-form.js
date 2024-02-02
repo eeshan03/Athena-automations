@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const LeaveForm = () => {
+  const [user, setUser] = useState("")
   const [name, setName] = useState("");
+  // const [status, setStatus] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [reason, setReason] = useState("");
@@ -15,13 +17,16 @@ const LeaveForm = () => {
 
     // Perform actions with form data, e.g., send to server or handle locally
     const formData = {
+      user,
       name,
+      // status,
       date_from: dateFrom,
       date_to: dateTo,
       reason,
       leave_duration: leaveDuration,
       backup_person: backupPerson,
-      is_leave_sanctioned: isLeaveSanctioned === "Sanctioned" ? 1 : 0,
+      // is_leave_sanctioned: isLeaveSanctioned === "Sanctioned" ? 0 : 1,
+      is_leave_sanctioned: isLeaveSanctioned === "Sanctioned" ? 0 : (isLeaveSanctioned === "Not Sanctioned" ? 1 : 0),
     };
 
     try {
@@ -29,6 +34,7 @@ const LeaveForm = () => {
       await axios.post("http://localhost:3007/api/leave_data", formData);
 
       // Clear form fields after submission
+      setUser("")
       setName("");
       setDateFrom("");
       setDateTo("");
@@ -36,9 +42,9 @@ const LeaveForm = () => {
       setLeaveDuration("");
       setBackupPerson("");
       setIsLeaveSanctioned("Sanctioned");
+      // setStatus("");
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error, show message, etc.
     }
   };
 
@@ -46,6 +52,15 @@ const LeaveForm = () => {
     <div style={styles.container}>
       <h2 style={styles.heading}>Athena Automation Leave Form</h2>
       <form onSubmit={handleFormSubmit} style={styles.form}>
+      <label style={styles.label}>
+          Username:
+          <input
+            type="text"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            required
+          />
+        </label>
         <label style={styles.label}>
           Name:
           <input

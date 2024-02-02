@@ -105,6 +105,7 @@ const Manager = () => {
       <Header />
       <CurrentDateTime />
       <Link to="/DataAnalysis"><button style={{float: 'right', marginRight:'33px'}} className='analysis'>Data Analysis</button></Link>
+      <Link to="/LeaveData"><button style={{float: 'right', marginRight:'33px'}} className='analysis'>Leave Data</button></Link>
       <h1 style={{ textAlign: 'center' }}>Manager data</h1>
       <div className="app-container">
         <table className="table" id="mantable">

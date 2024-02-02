@@ -10,7 +10,7 @@ app.use(express.json());
 // Create a MySQL connection
 const connection = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Soaham',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -63,19 +63,45 @@ app.post('/api/table', (req, res) => {
   });
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+
+// Leave Data
+app.get('/api/LeaveData', (req, res) => {
+  // SQL query to select all rows from the 'dpr' table
+  const query = 'SELECT id, user, name, date_from, date_to, reason, leave_duration, backup_person, is_leave_sanctioned FROM leave_data';
+
+  // Execute the query
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching data from database:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    } else {
+      // Return the result as a JSON response
+      res.json(results);
+    }
+  });
+});
+
+
+app.post('/api/updateStatus', (req, res) => {
+  const { id } = req.body;
+
+  // SQL query to update the 'is_leave_sanctioned' status for a specific record
+  const updateQuery = 'UPDATE leave_data SET is_leave_sanctioned = 1 WHERE id = ?';
+
+  // Execute the update query
+  connection.query(updateQuery, [id], (updateError) => {
+    if (updateError) {
+      console.error('Error updating leave sanction status:', updateError);
+      res.status(500).json({ error: 'An error occurred' });
+    } else {
+      res.status(200).json({ message: 'Status updated successfully' });
+    }
+  });
 });
 
 
 
-
-
-
-
-
-
-
-
-
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
