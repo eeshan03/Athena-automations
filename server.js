@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(cors());
 const db = mysql.createConnection({
   host: "192.168.1.26",
-  user: 'Soaham',
+  user: 'Dhruv',
   password: "1234",
   port: 3306,
   database: "athena",
@@ -25,7 +25,8 @@ app.post("/login", (req, res) => {
       }
 
       if (result.length > 0) {
-        res.send(result);
+        const user = result[0];
+        res.send({ user });
       } else {
         res.send({ message: "Invalid Credentials" });
       }

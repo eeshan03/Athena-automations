@@ -143,30 +143,6 @@ const DataAnalysis = () => {
     <>
     <Sidebar />
       <div>
-        {/* <LineChart
-          width={500}
-          height={300}
-          data={rejection}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="MachineName" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="X_bar"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotone" dataKey="R_val" stroke="#82ca9d" />
-        </LineChart> */}
         <Link to="/manager">
           <button
             style={{ marginLeft: "33px", marginTop: "33px", width: "100px" }}

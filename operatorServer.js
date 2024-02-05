@@ -7,10 +7,9 @@ const port = 3007;
 app.use(cors());
 app.use(express.json());
 
-// Create a MySQL connection
 const connection = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Soaham',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -23,6 +22,30 @@ connection.connect((err) => {
   } else {
     console.log('Connected to database');
   }
+});
+
+// Endpoint to get LeaveOperatorData for a specific user
+app.get('/api/LeaveOperatorData', (req, res) => {
+  const { username } = req.query; // Retrieve the username from query parameters
+  console.log('Received request for user:', username); // Add this log
+
+  if (!username) {
+    return res.status(400).json({ error: 'Username is required' });
+  }
+
+  // SQL query to select leave data for the given username
+  const query = 'SELECT id, user, name, date_from, date_to, reason, leave_duration, backup_person, is_leave_sanctioned FROM leave_data WHERE user = ?';
+
+  // Execute the query
+  connection.query(query, [username], (error, results) => {
+    if (error) {
+      console.error('Error fetching data from database:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    } else {
+      // Return the result as a JSON response
+      res.json(results);
+    }
+  });
 });
 
 app.post('/api/leave_data', (req, res) => {

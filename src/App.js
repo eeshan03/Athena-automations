@@ -1,5 +1,6 @@
+import React, { useState } from "react";
 import "./App.css";
-import React from "react";
+import { AuthProvider } from "./components/AuthContext"; // Import AuthProvider
 import Home from "./components/Home";
 import OEE from "./components/OEE";
 import Flow from "./components/Flow";
@@ -14,40 +15,52 @@ import Operator from "./components/Operator";
 import Maintenance from "./components/Maintenance";
 import Manager from "./components/Manager";
 import CreateUser from "./components/CreateUser";
+import LeaveOperatorData from "./components/leaveOperatorData";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Routes,
+  Route,
 } from "react-router-dom";
 import SettingMode from "./components/SettingMode";
 import DataAnalysis from "./components/DataAnalysis";
 import LeaveManagerData from "./components/leaveManagerData";
 
-function App() {
+const App = () => {
+  const [user, setUser] = useState({ username: '' });
+
+  const login = (userData) => {
+    setUser(userData);
+  };
+
+  const logout = () => {
+    setUser({ username: '' });
+  };
+
   return (
     <div className="app">
-      <Routes>
-
-      <Route path="/createuser" element={<CreateUser />} />
-        <Route exact path="/" element={<Login />} />
-        <Route path="/Temperature" element={<Temperature />} />
-        <Route path="/pressure" element={<Pressure />} />
-        <Route path="/rpm" element={<RPM />} />
-        <Route path="/flow" element={<Flow />} />
-        <Route path="/oee" element={<OEE />} />
-        <Route path="/vibration" element={<Vibration />} />
-        <Route path="/rework" element={<Rework />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/rejection" element={<Rejection />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/maintenance" element={<Maintenance />} />
-        <Route path="/operator" element={<Operator />} />
-        <Route path="/manager" element={<Manager />} />
-        <Route path="/setting" element={<SettingMode />} />
-        <Route path="/dataAnalysis" element={<DataAnalysis />} />
-        <Route path="/LeaveData" element={<LeaveManagerData />} />
-      </Routes>
+      <AuthProvider> {/* Wrap App with AuthProvider */}
+        <Routes>
+          <Route path="/createuser" element={<CreateUser />} />
+          <Route exact path="/" element={<Login />} />
+          <Route path="/Temperature" element={<Temperature />} />
+          <Route path="/pressure" element={<Pressure />} />
+          <Route path="/rpm" element={<RPM />} />
+          <Route path="/flow" element={<Flow />} />
+          <Route path="/oee" element={<OEE />} />
+          <Route path="/vibration" element={<Vibration />} />
+          <Route path="/rework" element={<Rework />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/rejection" element={<Rejection />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/maintenance" element={<Maintenance />} />
+          <Route path="/operator" element={<Operator />} />
+          <Route path="/manager" element={<Manager />} />
+          <Route path="/setting" element={<SettingMode />} />
+          <Route path="/dataAnalysis" element={<DataAnalysis />} />
+          <Route path="/LeaveData" element={<LeaveManagerData />} />
+          <Route path="/LeaveOperatorData" element={<LeaveOperatorData />} />
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }

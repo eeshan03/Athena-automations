@@ -29,12 +29,22 @@ const DropdownMenu = ({
     }));
   };
 
+  const leaveHistory = (e) => {
+    setSelectedOption("custom");
+    setSelectedOptions((prevSelectedOptions) => ({
+      ...prevSelectedOptions,
+      [field]: e.target.value,
+    }));
+  };
+
   useEffect(() => {
     setSelectedOptions((prevSelectedOptions) => ({
       ...prevSelectedOptions,
       [field]: selectedOption,
     }));
   }, [selectedOption, field, setSelectedOptions]);
+
+  
 
   return (
     <td>
@@ -553,6 +563,9 @@ const Operator = () => {
               />
             </div>
           )}
+        </div>
+        <div className="shifttable-wrapper">
+        <Link to="/LeaveOperatorData"><button>Your Leave Requests</button></Link>
         </div>
         
       </div>

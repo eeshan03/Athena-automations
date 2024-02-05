@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+// Import AuthContext
+import React, { useState, useContext } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "./AuthContext"  // Import AuthContext as a named export
 import "./Login.css";
 import logo from '../images/logo.png';
 import Image from 'react-image-resizer';
 
 function Login() {
+  // Get setUser from AuthContext
+  const { setUser } = useContext(AuthContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
   const [loginStatus, setLoginStatus] = useState("");
 
@@ -16,21 +22,28 @@ function Login() {
       username: username,
       password: password,
     }).then((response) => {
-      if (response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-        const userRole = response.data[0].role;
+      console.log('Login response:', response);
+
+      const user = response.data.user;
+
+      if (user) {
+        // Update the user context here
+        setUser({ username: user.username, role: user.role });  // Replace with actual user properties
+
+        const userRole = user.role;
         if (userRole === 'operator') {
-          navigate('../operator'); // Navigate to the operator route
+          navigate('../operator');
         } else if (userRole === 'manager') {
-          navigate('../manager'); // Navigate to the manager route
+          navigate('../manager');
         } else if (userRole === 'maintenance') {
-          navigate('../maintenance'); // Navigate to the superadmin route
+          navigate('../maintenance');
         } else if (userRole === 'superadmin') {
-          navigate('../home'); // Navigate to the superadmin route
+          navigate('../home');
         } else {
-          setLoginStatus("Invalid Role"); // Set an error message
+          setLoginStatus("Invalid Role");
         }
+      } else {
+        setLoginStatus("Invalid Response Data");
       }
     });
   };
@@ -39,7 +52,7 @@ function Login() {
     <>
       <div className='page'>
         <div className='login'>
-          <div class="left">
+          <div className="left">
             <a href="https://www.google.com/" target="_blank">
               <Image
                 src={logo}
@@ -56,13 +69,14 @@ function Login() {
             <input type="password" placeholder="PASSWORD" onChange={(e) => {
               setPassword(e.target.value);
             }} /><br />
+
             <h5 style={{ color: '#FC2929', marginTop: '10px', textAlign: 'center' }}>{loginStatus}</h5>
             <button className="loginbtn" type="submit" onClick={login}>Login</button>
           </div>
-          <div class="right">
-            <div class="right-text">
+          <div className="right">
+            <div className="right-text">
             </div>
-            <div class="right-inductor"><img src="src\images\mainbck.jpg" alt="" /></div>
+            <div className="right-inductor"><img src="src\images\mainbck.jpg" alt="" /></div>
           </div>
         </div>
       </div>
