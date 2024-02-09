@@ -1,9 +1,15 @@
+// LeaveManagerData.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom"; 
 import SideBar from "./SideBar";
+import LeaveHistory from "./LeaveHistory";
 
 const LeaveManagerData = () => {
   const [data, setData] = useState([]);
+  const [updateData, setUpdateData] = useState([]);
+  const [redirectToUpdateHistory, setRedirectToUpdateHistory] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,31 +28,53 @@ const LeaveManagerData = () => {
     try {
       const updatedData = [...data];
       const selectedRow = updatedData[index];
-  
+
       // Assuming you have an 'id' property in each row of your data
-      const { id } = selectedRow;
-  
+      const { id, user } = selectedRow;
+
       // Show a confirmation dialog
-      const confirmed = window.confirm('Are you sure you want to update the status?');
-  
+      const confirmed = window.confirm(
+        `Are you sure you want to update the status for ${user}?`
+      );
+
       if (confirmed) {
         // Send a request to update the status in the database
         await axios.post("http://localhost:3005/api/updateStatus", { id });
-  
+
         // Update the local state after successful update
         selectedRow.is_leave_sanctioned = 1;
         setData(updatedData);
+
+        // Update the history data only if status is updated to 1
+        setUpdateData((prevData) => [...prevData, selectedRow]);
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
+
+  const handleUpdateHistoryClick = () => {
+    // Use the navigate function to redirect to the update-history route
+    navigate("/update-history");
+  };
+
+  // Filter data with is_leave_sanctioned equal to 1
+  const filteredUpdateData = data.filter(
+    (row) => row.is_leave_sanctioned === 1
+  );
 
   return (
     <div>
       <SideBar />
+      <button onClick={handleUpdateHistoryClick} style={{ margin: "10px" }}>
+        Update History
+      </button>
       <div className="app-container">
+        {/* Use the Link component for navigation */}
+        {/* <Link to="/update-history" style={{ textDecoration: "none" }}>
+          <button style={{ cursor: "pointer" }}>Update History</button>
+        </Link> */}
+
         <table className="table" id="leaveTable">
           <thead>
             <tr>
@@ -84,6 +112,9 @@ const LeaveManagerData = () => {
           </tbody>
         </table>
       </div>
+      {redirectToUpdateHistory && (
+        <LeaveHistory updateData={filteredUpdateData} />
+      )}
     </div>
   );
 };

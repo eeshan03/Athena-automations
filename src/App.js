@@ -24,6 +24,7 @@ import {
 import SettingMode from "./components/SettingMode";
 import DataAnalysis from "./components/DataAnalysis";
 import LeaveManagerData from "./components/leaveManagerData";
+import LeaveHistory from "./components/LeaveHistory";
 
 const App = () => {
   const [user, setUser] = useState({ username: '' });
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/setting" element={<SettingMode />} />
           <Route path="/dataAnalysis" element={<DataAnalysis />} />
           <Route path="/LeaveData" element={<LeaveManagerData />} />
+          <Route path="/update-history" element={<LeaveHistory />} />
           <Route path="/LeaveOperatorData" element={<LeaveOperatorData />} />
         </Routes>
       </AuthProvider>

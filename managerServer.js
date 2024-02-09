@@ -66,8 +66,8 @@ app.post('/api/table', (req, res) => {
 
 // Leave Data
 app.get('/api/LeaveData', (req, res) => {
-  // SQL query to select all rows from the 'dpr' table
-  const query = 'SELECT id, user, name, date_from, date_to, reason, leave_duration, backup_person, is_leave_sanctioned FROM leave_data';
+  // SQL query to select all rows from the 'leave_data' table
+  const query = 'SELECT id, user, name, date_from, date_to, reason, leave_duration, backup_person, is_leave_sanctioned FROM leave_data WHERE is_leave_sanctioned=0';
 
   // Execute the query
   connection.query(query, (error, results) => {
@@ -81,7 +81,7 @@ app.get('/api/LeaveData', (req, res) => {
   });
 });
 
-
+//Update status
 app.post('/api/updateStatus', (req, res) => {
   const { id } = req.body;
 
@@ -95,6 +95,23 @@ app.post('/api/updateStatus', (req, res) => {
       res.status(500).json({ error: 'An error occurred' });
     } else {
       res.status(200).json({ message: 'Status updated successfully' });
+    }
+  });
+});
+
+// Update history
+app.get('/api/update-history', (req, res) => {
+  // SQL query to select rows with is_leave_sanctioned equal to 1 from the 'leave_data' table
+  const query = 'SELECT id, user, name, date_from, date_to, reason, leave_duration, backup_person, is_leave_sanctioned FROM leave_data WHERE is_leave_sanctioned = 1';
+
+  // Execute the query
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching update history data from database:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    } else {
+      // Return the result as a JSON response
+      res.json(results);
     }
   });
 });
