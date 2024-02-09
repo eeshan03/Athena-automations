@@ -18,7 +18,7 @@ const LeaveManagerData = () => {
     fetchData();
   }, []);
 
-const handleUpdateStatus = async (index) => {
+  const handleUpdateStatus = async (index) => {
     try {
       const updatedData = [...data];
       const selectedRow = updatedData[index];
@@ -26,16 +26,22 @@ const handleUpdateStatus = async (index) => {
       // Assuming you have an 'id' property in each row of your data
       const { id } = selectedRow;
   
-      // Send a request to update the status in the database
-      await axios.post("http://localhost:3005/api/updateStatus", { id });
+      // Show a confirmation dialog
+      const confirmed = window.confirm('Are you sure you want to update the status?');
   
-      // Update the local state after successful update
-      selectedRow.is_leave_sanctioned = 1;
-      setData(updatedData);
+      if (confirmed) {
+        // Send a request to update the status in the database
+        await axios.post("http://localhost:3005/api/updateStatus", { id });
+  
+        // Update the local state after successful update
+        selectedRow.is_leave_sanctioned = 1;
+        setData(updatedData);
+      }
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <div>
