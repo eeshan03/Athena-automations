@@ -80,8 +80,6 @@ return (
 			
 			{SidebarData.map((item, index) => { 
 			return <SubMenu item={item} key={index} marginTop= {150}/>;
-			
-			
 			}
 			)}
 			<button class = "close_btn" onClick={showSidebar}>Close</button>
