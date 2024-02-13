@@ -1,7 +1,6 @@
-// LeaveManagerData.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; 
 import SideBar from "./SideBar";
 import LeaveHistory from "./LeaveHistory";
 
@@ -28,37 +27,53 @@ const LeaveManagerData = () => {
     try {
       const updatedData = [...data];
       const selectedRow = updatedData[index];
-
-      // Assuming you have an 'id' property in each row of your data
-      const { id, user } = selectedRow;
-
-      // Show a confirmation dialog
+  
+      const { id, user, date_from, date_to, reason } = selectedRow;
+  
       const confirmed = window.confirm(
         `Are you sure you want to update the status for ${user}?`
       );
-
+  
       if (confirmed) {
-        // Send a request to update the status in the database
         await axios.post("http://localhost:3005/api/updateStatus", { id });
-
-        // Update the local state after successful update
+  
         selectedRow.is_leave_sanctioned = 1;
         setData(updatedData);
-
-        // Update the history data only if status is updated to 1
+  
         setUpdateData((prevData) => [...prevData, selectedRow]);
+  
+        // Send email to the user
+        sendEmailToUser(user, date_from, date_to, reason);
       }
     } catch (error) {
       console.error(error);
     }
   };
-
+  
+  const sendEmailToUser = async (to, dateFrom, dateTo, reason) => {
+    // Extract only the date portion
+    const formattedDateFrom = new Date(dateFrom).toLocaleDateString();
+    const formattedDateTo = new Date(dateTo).toLocaleDateString();
+  
+    try {
+      const response = await axios.post("http://localhost:3008/send-email", {
+        to,
+        subject: "Leave Sanctioned",
+        text: `Your leave from ${formattedDateFrom} \nto ${formattedDateTo} has been sanctioned.\nReason: ${reason}`,
+      });
+  
+      console.log("Email sent:", response.data);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+  
+  
+  
   const handleUpdateHistoryClick = () => {
-    // Use the navigate function to redirect to the update-history route
     navigate("/update-history");
   };
 
-  // Filter data with is_leave_sanctioned equal to 1
   const filteredUpdateData = data.filter(
     (row) => row.is_leave_sanctioned === 1
   );
