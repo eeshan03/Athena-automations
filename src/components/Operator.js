@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import CurrentDateTime from "./timeanddate";
 import "./Operator.css";
 import { motion } from "framer-motion/dist/framer-motion";
 // import nodemailer from "nodemailer";
@@ -47,9 +46,7 @@ const DropdownMenu = ({
   
 
   return (
-    <div>
-    <Header />
-    <br/>
+   
     <td>
       <div className="dropdown-menu-container">
         <select value={selectedOption} onChange={handleOptionChange}>
@@ -71,7 +68,6 @@ const DropdownMenu = ({
         )}
       </div>
     </td>
-    </div>
   );
 };
 
@@ -363,6 +359,7 @@ const Operator = () => {
 
   return (
     <>
+      <Header />
       <div className="Operator-data">
         <div className="ophead">
           <h1 style={{ textAlign: "center" }}>Operator Data</h1>
