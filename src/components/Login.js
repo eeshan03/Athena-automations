@@ -53,7 +53,7 @@ function Login() {
       <div className='page'>
         <div className='login'>
           <div className="left">
-            <a href="https://www.google.com/" target="_blank">
+            <a href="https://www.linkedin.com/company/athena-automation" target="_blank">
               <Image
                 src={logo}
                 alt="logo"
