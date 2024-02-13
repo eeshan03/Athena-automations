@@ -47,6 +47,9 @@ const DropdownMenu = ({
   
 
   return (
+    <div>
+    <Header />
+    <br/>
     <td>
       <div className="dropdown-menu-container">
         <select value={selectedOption} onChange={handleOptionChange}>
@@ -68,6 +71,7 @@ const DropdownMenu = ({
         )}
       </div>
     </td>
+    </div>
   );
 };
 
