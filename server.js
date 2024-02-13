@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const nodemailer = require('nodemailer');
-
+const pass = process.env.PASS;
 
 const app = express();
 app.use(express.json());
@@ -20,7 +21,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'freeplay.cha@gmail.com',
-    pass: 'byrk ctpj qoov hdtn',
+    pass: pass,
   },
 });
 
@@ -69,4 +70,4 @@ app.post("/login", (req, res) => {
 app.listen(3008, () => {
   console.log("running server on port 3008");
 });
-module.exports = app;
+module.exports = app;
