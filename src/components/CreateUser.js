@@ -7,6 +7,7 @@ const CreateUser = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [section, setSection] = useState('');
   const [status, setStatus] = useState('');
 
   // Function to send an email to the user
@@ -19,8 +20,8 @@ const sendEmailToUser = (userEmail) => {
       Your login details:\n
       Username: ${username}\n
       Password: ${password}\n
-      Role: ${role}\n\n
-      We hope you enjoy using Athena Automation!`,
+      Role: ${role}\n\
+      Section: ${section}\n\n`,
   })
     .then((response) => {
       console.log('Email sent:', response.data);
@@ -47,6 +48,7 @@ const sendEmailToUser = (userEmail) => {
             username: username,
             password: password,
             role: role,
+            section: section,
           })
             .then((response) => {
               setStatus('User created successfully');
@@ -101,6 +103,19 @@ const sendEmailToUser = (userEmail) => {
               <option value="operator">Operator</option>
               <option value="manager">Manager</option>
               <option value="maintenance">Maintenance</option>
+              
+            </select>
+          </label>
+          <label>
+            Section:
+            <select value={section} onChange={(e) => setSection(e.target.value)}>
+              <option value="">Select Section</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              
             </select>
           </label>
           <br />
