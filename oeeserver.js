@@ -74,7 +74,7 @@ app.get('/checkuser/:username', function (req, res) {
 });
 
 app.post('/createuser', (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, section } = req.body;
 
   // Insert the new user into the database
   const createUserSql = 'INSERT INTO users (username, password, role, section) VALUES (?, ?, ?, ?)';

@@ -38,10 +38,7 @@ const sendEmailToUser = (userEmail) => {
       setStatus('Please select a role');
       return;
     }
-    if (!section) {
-      setStatus('Please select a section');
-      return;
-    }
+    
 
     Axios.get(`http://localhost:3010/checkuser/${username}`)
       .then((response) => {
