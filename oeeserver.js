@@ -77,7 +77,7 @@ app.post('/createuser', (req, res) => {
   const { username, password, role } = req.body;
 
   // Insert the new user into the database
-  const createUserSql = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+  const createUserSql = 'INSERT INTO users (username, password, role, section) VALUES (?, ?, ?, ?)';
   const checkUserSql = 'SELECT COUNT(*) AS count FROM users WHERE username = ?';
 
   // Check if the username already exists
@@ -91,7 +91,7 @@ app.post('/createuser', (req, res) => {
         res.status(400).json({ error: 'Username already exists. Please choose a different username.' });
       } else {
         // If the username doesn't exist, proceed to create the user
-        dbConn.query(createUserSql, [username, password, role], (createError, createResult) => {
+        dbConn.query(createUserSql, [username, password, role, section], (createError, createResult) => {
           if (createError) {
             console.error('Error creating user:', createError);
             res.status(500).json({ error: 'Internal Server Error' });
