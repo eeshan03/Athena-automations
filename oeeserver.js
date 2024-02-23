@@ -106,6 +106,58 @@ app.post('/createuser', (req, res) => {
 });
 
 
+app.get('/checkmachine/:deviceId', function (req, res) {
+  const deviceId = req.params.deviceId;
+
+  dbConn.query(
+    'SELECT COUNT(*) AS count FROM Machines WHERE DeviceId = ?',
+    [deviceId],
+    function (error, results, fields) {
+      if (error) {
+        console.error('Error checking Device ID:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        const count = results[0].count;
+        const exists = count > 0;
+        res.status(200).json({ exists: exists });
+      }
+    }
+  );
+});
+
+app.post('/addmachine', (req, res) => {
+  const { deviceId, machineName, section } = req.body;
+
+  // Insert the new machine into the database
+  const addMachineSql = 'INSERT INTO Machines (DeviceId, MachineName, Section) VALUES (?, ?, ?)';
+  const checkMachineSql = 'SELECT COUNT(*) AS count FROM Machines WHERE DeviceId = ?';
+
+  // Check if the Device ID already exists
+  dbConn.query(checkMachineSql, [deviceId], (checkError, checkResults) => {
+    if (checkError) {
+      console.error('Error checking Device ID:', checkError);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      const count = checkResults[0].count;
+      if (count > 0) {
+        res.status(400).json({ error: 'Device ID already exists. Please choose a different Device ID.' });
+      } else {
+        // If the Device ID doesn't exist, proceed to add the machine
+        dbConn.query(addMachineSql, [deviceId, machineName, section], (addError, addResult) => {
+          if (addError) {
+            console.error('Error adding machine:', addError);
+            res.status(500).json({ error: 'Internal Server Error' });
+          } else {
+            console.log('Machine added successfully');
+            res.status(201).json({ message: 'Machine added successfully' });
+          }
+        });
+      }
+    }
+  });
+});
+
+
 
 app.get('/Rejection', function(req,res){
   dbConn.query(

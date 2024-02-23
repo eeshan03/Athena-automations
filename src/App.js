@@ -25,6 +25,7 @@ import SettingMode from "./components/SettingMode";
 import DataAnalysis from "./components/DataAnalysis";
 import LeaveManagerData from "./components/leaveManagerData";
 import LeaveHistory from "./components/LeaveHistory";
+import AddMachine from "./components/AddMachine";
 
 const App = () => {
   const [user, setUser] = useState({ username: '' });
@@ -41,8 +42,9 @@ const App = () => {
     <div className="app">
       <AuthProvider> {/* Wrap App with AuthProvider */}
         <Routes>
-          <Route path="/createuser" element={<CreateUser />} />
           <Route exact path="/" element={<Login />} />
+          <Route path="/createuser" element={<CreateUser />} />
+          <Route path="/addmachine" element={<AddMachine />} />
           <Route path="/Temperature" element={<Temperature />} />
           <Route path="/pressure" element={<Pressure />} />
           <Route path="/rpm" element={<RPM />} />

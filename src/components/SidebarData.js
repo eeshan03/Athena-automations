@@ -144,4 +144,9 @@ export const SidebarData = [
     path: "/createuser",
     icon: <i class="fa-solid fa-user"></i>,
   },
+  {
+    title: "Add Machine",
+    path: "/addmachine",
+    icon: <i class="fa-solid fa-gear"></i>,
+  },
 ];
