@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { Cell, Tooltip } from 'recharts';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './OEE.css';
@@ -52,66 +52,12 @@ const OEEContainer = () => {
                     </h5>
                   </div> */}
                   <div className='pi-chart-container'>
-                    <PieChart width={300} height={80}>
-                      <Pie
-                        data={[
-                          { name: 'Availibility', value: data.Availability || 0, fill: '#dce775' },
-                          { name: 'Performance', value: data.Performance || 0, fill: '#82ca9d' },
-                          { name: 'Quality', value: data.Quality || 0, fill: '#ff8a65' },
-                        ]}
-                        cx={150}
-                        cy={70}
-                        innerRadius={30}
-                        outerRadius={70}
-                        startAngle={180}
-                        endAngle={0}
-                        paddingAngle={0}
-                        dataKey='value'
-                        onMouseEnter={(_, index) => setActiveIndex(index)}
-                      >
-                        {[
-                          { name: 'Availibility', value: data.Availability || 0, fill: '#b1cbbb' },
-                          { name: 'Performance', value: data.Performance || 0, fill: '#e3eaa7' },
-                          { name: 'Quality', value: data.Quality || 0, fill: '#86af49' },
-                        ].map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value, name, props) => [value, props.payload.name]} active={activeIndex !== null} />
-                    </PieChart>
                     <h5 style = {{textAlign:'center'}}>OEE = Availability X Performance X Quality</h5>
                     <h4 style = {{textAlign:'center'}}>{data.OEE}% = {data.Availability}% X {data.Performance}% X {data.Quality}%</h4>
                     
                   </div>
 
                   <div className='pi-chart-container'>
-                    <PieChart width={300} height={80}>
-                      <Pie
-                        data={[
-                          { name: 'Parts Produced', value: data.Parts_produced || 0, fill: '#dce775' },
-                          { name: 'Parts Rejected', value: data.Parts_rejected || 0, fill: '#82ca9d' },
-                          { name: 'Target', value: data.Target || 0, fill: '#ff8a65' },
-                        ]}
-                        cx={150}
-                        cy={70}
-                        innerRadius={30}
-                        outerRadius={70}
-                        startAngle={180}
-                        endAngle={0}
-                        paddingAngle={0}
-                        dataKey='value'
-                        onMouseEnter={(_, index) => setActiveIndex(index)}
-                      >
-                        {[
-                          { name: 'Parts Produced', value: data.Parts_produced || 0, fill: '#dce775' },
-                          { name: 'Parts Rejected', value: data.Parts_rejected || 0, fill: '#82ca9d' },
-                          { name: 'Target', value: data.Target || 0, fill: '#ff8a65' },
-                        ].map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value, name, props) => [value, props.payload.name]} active={activeIndex !== null} />
-                    </PieChart>
                     <h5 className='chart-heading' style={{ textAlign: 'center' }}>
                       Total Parts
                     </h5>

@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Soaham',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -31,13 +31,13 @@ dbConn.connect();
 
 app.get('/device/:machineId', function (req, res) {
   const machineId = req.params.machineId;
-  dbConn.query(`Select * from DeviceMap where DeviceID = '${machineId}'`, function (error, results, fields) {
+  dbConn.query(`Select * from Machines where DeviceId = '${machineId}'`, function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
 });
 app.get('/machineid', function (req, res) {
-  dbConn.query('SELECT Machine FROM DeviceMap', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId FROM Machines', function (error, results, fields) {
     if (error) throw error;
     return res.json(results);
   });
@@ -56,7 +56,7 @@ app.get('/temperature/past24h/:machineId', function (req, res) {
 
 // get current temperature for all machines
 app.get('/temperature/current', function (req, res) {
-  dbConn.query('SELECT DeviceId, Temp, Humidity FROM Temperature WHERE (DeviceId, Stamp) IN (SELECT DeviceId, MAX(Stamp) FROM Temperature GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId, Temp, Humidity, MachineName FROM Temperature WHERE (DeviceId, Stamp) IN (SELECT DeviceId, MAX(Stamp) FROM Temperature GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
