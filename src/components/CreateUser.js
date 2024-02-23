@@ -11,7 +11,6 @@ const CreateUser = () => {
   const [status, setStatus] = useState('');
 
   // Function to send an email to the user
-  // Function to send an email to the user
 const sendEmailToUser = (userEmail) => {
   Axios.post('http://localhost:3008/send-email', {
     to: userEmail,
