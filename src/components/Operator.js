@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Operator.css";
 import { motion } from "framer-motion/dist/framer-motion";
-// import nodemailer from "nodemailer";
-import nodemailer from "nodemailer"; // Adjust the path if necessary
 import { Link } from "react-router-dom";
 import Header from "./Header";
 import LeaveForm from "./leave-form";
@@ -28,14 +26,6 @@ const DropdownMenu = ({
     }));
   };
 
-  const leaveHistory = (e) => {
-    setSelectedOption("custom");
-    setSelectedOptions((prevSelectedOptions) => ({
-      ...prevSelectedOptions,
-      [field]: e.target.value,
-    }));
-  };
-
   useEffect(() => {
     setSelectedOptions((prevSelectedOptions) => ({
       ...prevSelectedOptions,
@@ -43,10 +33,7 @@ const DropdownMenu = ({
     }));
   }, [selectedOption, field, setSelectedOptions]);
 
-  
-
   return (
-   
     <td>
       <div className="dropdown-menu-container">
         <select value={selectedOption} onChange={handleOptionChange}>
@@ -72,6 +59,7 @@ const DropdownMenu = ({
 };
 
 const Operator = () => {
+  const [selectedMaintenanceUser, setSelectedMaintenanceUser] = useState("");
   const [showAssignedWorkTable, setShowAssignedWorkTable] = useState(false);
   const [showMaintenanceTable, setShowMaintenanceTable] = useState(false);
   const [selectedMachine, setSelectedMachine] = useState("");
@@ -96,6 +84,23 @@ const Operator = () => {
   });
   const [selectedOptionsUpper, setSelectedOptionsUpper] = useState({});
   const [selectedOptionsLower, setSelectedOptionsLower] = useState({});
+  const [maintenanceUsers, setMaintenanceUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchMaintenanceUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3007/api/maintenance-users"
+        );
+        setMaintenanceUsers(response.data); // Assuming the response.data is an array of usernames
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMaintenanceUsers();
+  }, []);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -266,7 +271,6 @@ const Operator = () => {
     setShiftModalOpen(!isShiftModalOpen);
   };
 
-
   const handleCloseButtonLeave = () => {
     setLeaveModalOpen(false);
   };
@@ -274,60 +278,68 @@ const Operator = () => {
     setShiftModalOpen(false);
   };
 
-
   const handleSendMaintenanceEmail = async () => {
-    const message = window.prompt("Enter your message for maintenance:");
-    if (!message) {
-      // User canceled the prompt or didn't enter any message
+    if (!selectedMaintenanceUser) {
+      alert("Please select a Maintenance User");
       return;
     }
-
-    // const emailSubject = "Maintenance Request";
-    // const emailAddress = "kiranmogal0309@gmail.com";
-    // const mailToUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
-    // emailSubject
-    // )}&body=${encodeURIComponent(message)}`;
-
-    // Open the user's default email client with a pre-filled email
-    // window.open(mailToUrl);
-
-    if (!selectedMachine || !symptomMachine || !PartMachine || !StatusMachine) {
-      // At least one option is not selected, do not add to the table
+  
+    const selectedUser = maintenanceUsers.find(
+      (user) => user.username === selectedMaintenanceUser
+    );
+  
+    if (!selectedUser || !selectedMachine || !symptomMachine || !PartMachine || !StatusMachine) {
+      alert("Please fill in all necessary information");
       return;
     }
-
-    const newMaintenanceItem = {
-      machine: selectedMachine,
-      symptom: symptomMachine,
-      part: PartMachine,
-      status: StatusMachine,
-      message: message,
-    };
-
-    setMaintenanceList([...maintenanceList, newMaintenanceItem]);
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "ayurvedamart45@gmail.com",
-        pass: "hfxtvobbnoxvfmak",
-      },
-    });
-
-    const options = {
-      from: "ayurvedamart45@gmail.com",
-      to: "khushiwalje48@gmail.com",
-      subject: "hello world",
-      html: "hi ",
-    };
-
-    await transporter.sendMail(options);
-
-    // Reset the dropdown values
-    setSelectedMachine("");
-    setsymptomMachine("");
-    setPartMachine("");
-    setStatusMachine("");
+  
+    try {
+      // Display the current state for debugging
+      console.log("Selected Machine:", selectedMachine);
+      console.log("Symptom Machine:", symptomMachine);
+      console.log("Part Machine:", PartMachine);
+      console.log("Status Machine:", StatusMachine);
+      console.log("Selected Maintenance User:", selectedMaintenanceUser);
+  
+      // Send email using Axios to your server
+      await axios.post("http://localhost:3007/send-maintenance-email", {
+        to: selectedMaintenanceUser, // Use the username directly as it's also the email
+        subject: "Maintenance Notification",
+        text: `
+            Machine Name: ${selectedMachine}\n
+            Symptoms: ${symptomMachine}\n
+            Part Number: ${PartMachine}\n
+            Machine Status: ${StatusMachine}\n
+          `,
+      });
+  
+      // Assuming you want to update the UI with the sent maintenance request
+      setMaintenanceList((prevList) => [
+        ...prevList,
+        {
+          machine: selectedMachine,
+          symptom: symptomMachine,
+          part: PartMachine,
+          status: StatusMachine,
+          maintenanceUser: selectedUser.username, // Add maintenance user
+        },
+      ]);
+  
+      // Clear the selected values
+      setSelectedMachine("");
+      setsymptomMachine("");
+      setPartMachine("");
+      setStatusMachine("");
+      setSelectedMaintenanceUser("");
+  
+      // Show a prompt after successful email sending
+      alert("Maintenance email sent successfully!");
+    } catch (error) {
+      console.error("Error sending maintenance email:", error);
+      alert("Error sending maintenance email. Please try again.");
+    }
   };
+  
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -368,7 +380,7 @@ const Operator = () => {
           Daily production report & Machine details
         </p>
       </div>
-    <br/>
+      <br />
       <div
         style={{
           display: "flex",
@@ -404,9 +416,7 @@ const Operator = () => {
                 >
                   Close
                 </button>
-                <LeaveForm>
-                  Loading…
-                </LeaveForm>
+                <LeaveForm>Loading…</LeaveForm>
               </motion.div>
               <motion.div
                 className="backdrop"
@@ -566,9 +576,10 @@ const Operator = () => {
           )}
         </div>
         <div className="shifttable-wrapper">
-        <Link to="/LeaveOperatorData"><button>Your Leave Requests</button></Link>
+          <Link to="/LeaveOperatorData">
+            <button>Your Leave Requests</button>
+          </Link>
         </div>
-        
       </div>
 
       <div className="app-container">
@@ -676,6 +687,7 @@ const Operator = () => {
             <th>Symptoms of the problem</th>
             <th>Part Number</th>
             <th>Machine Status</th>
+            <th>Maintenance User</th>
           </tr>
           <tr>
             <td>
@@ -719,6 +731,19 @@ const Operator = () => {
                 {/* Add more options as needed */}
               </select>
             </td>
+            <td>
+              <select
+                value={selectedMaintenanceUser}
+                onChange={(e) => setSelectedMaintenanceUser(e.target.value)}
+              >
+                <option value="">Select Maintenance User</option>
+                {maintenanceUsers.map((user) => (
+                  <option key={user.id} value={user.username}>
+                    {user.username}
+                  </option>
+                ))}
+              </select>
+            </td>
           </tr>
           <td colSpan={dropdownMenusLower.length + 1}>
             <button
@@ -742,6 +767,7 @@ const Operator = () => {
               <td>{item.symptom}</td>
               <td>{item.part}</td>
               <td>{item.status}</td>
+              <td>{item.maintenanceUser}</td> 
             </tr>
           ))}
         </table>

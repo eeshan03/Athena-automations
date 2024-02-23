@@ -1,7 +1,9 @@
-const express = require('express');
-const mysql = require('mysql');
-const cors = require('cors');
-
+require("dotenv").config();
+const express = require("express");
+const mysql = require("mysql");
+const cors = require("cors");
+const nodemailer = require("nodemailer");
+const pass = process.env.PASS;
 const app = express();
 const port = 3007;
 app.use(cors());
@@ -15,6 +17,14 @@ const connection = mysql.createConnection({
   database: 'athena'
 });
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "freeplay.cha@gmail.com",
+    pass: pass,
+  },
+});
+
 // Connect to the database
 connection.connect((err) => {
   if (err) {
@@ -23,7 +33,6 @@ connection.connect((err) => {
     console.log('Connected to database');
   }
 });
-
 // Endpoint to get LeaveOperatorData for a specific user
 app.get('/api/LeaveOperatorData', (req, res) => {
   const { username } = req.query; // Retrieve the username from query parameters
@@ -99,6 +108,57 @@ app.post('/api/lower_table', (req, res) => {
       res.status(200).json({ message: 'Data saved successfully' });
     }
   });
+});
+
+
+app.get('/api/maintenance-users', async (req, res) => {
+  try {
+    const maintenanceUsers = await getMaintenanceUsers(); // Implement this query
+    res.json(maintenanceUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Function to get maintenance users
+const getMaintenanceUsers = async () => {
+  return new Promise((resolve, reject) => {
+    // Use the connection to execute a query to fetch usernames where role is 'Maintenance'
+    const query = 'SELECT username FROM users WHERE role = ?';
+    connection.query(query, ['maintenance'], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results.map((row) => ({ username: row.username, id: row.id })));
+      }
+    });
+  });
+};
+
+
+app.post('/send-maintenance-email', async (req, res) => {
+  const { to, subject, text } = req.body;
+
+  try {
+    const mailOptions = {
+      from: 'freeplay.cha@gmail.com',
+      to,
+      subject,
+      text,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending maintenance email:', error);
+        return res.status(500).send('Error sending maintenance email: ' + error.message);
+      }
+      res.status(200).send('Maintenance email sent: ' + info.response);
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 
