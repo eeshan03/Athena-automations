@@ -5,6 +5,7 @@ import Header from "./Header";
 import CurrentDateTime from "./timeanddate";
 import { Link } from "react-router-dom";
 import { getByDisplayValue } from "@testing-library/react";
+import Sidebar2 from "./Sidebar2";
 
 const DropdownMenu = ({
   options,
@@ -119,6 +120,7 @@ const Manager = () => {
 
   return (
     <div>
+      <Sidebar2 />
     <div style={{ textAlign: 'center' }}>
       <Header />
       <div style={{ marginTop: '10px', textAlign: 'right' }}>
