@@ -7,7 +7,6 @@ import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
 import "./resizing.css";
 import ImageResizer from "react-image-resizer";
-import logo from "../images/logo.png";
 import Header from "./Header";
 
 const Nav = styled.div`
@@ -51,7 +50,6 @@ const Sidebar2 = () => {
 
   return (
     <>
-      <Header />
 
       <IconContext.Provider value={{ color: "#fff" }}>
         <Nav>
