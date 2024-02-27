@@ -5,6 +5,7 @@ import Header from "./Header";
 import CurrentDateTime from "./timeanddate";
 import { Link } from "react-router-dom";
 import { getByDisplayValue } from "@testing-library/react";
+import Sidebar2 from "./Sidebar2";
 
 const DropdownMenu = ({
   options,
@@ -119,8 +120,9 @@ const Manager = () => {
 
   return (
     <div>
-    <div style={{ textAlign: 'center' }}>
       <Header />
+      <Sidebar2 />
+    <div style={{ textAlign: 'center' }}>
       <div style={{ marginTop: '10px', textAlign: 'right' }}>
         <Link to="/DataAnalysis"><button className='analysis' style={{ fontSize: '16px', padding: '10px' }}>Data Analysis</button></Link>
         <span style={{ margin: '0 10px' }}></span>

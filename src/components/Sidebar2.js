@@ -7,8 +7,10 @@ import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
 import "./resizing.css";
 import ImageResizer from "react-image-resizer";
-import logo from "../images/logo.png";
 import Header from "./Header";
+
+// Sidebar.js and SidebarData.js are for Superadmin
+// Sidebar2.js and SidebarData2.js are for Manager
 
 const Nav = styled.div`
   background: #c62828;
@@ -51,7 +53,6 @@ const Sidebar2 = () => {
 
   return (
     <>
-      <Header />
 
       <IconContext.Provider value={{ color: "#fff" }}>
         <Nav>
