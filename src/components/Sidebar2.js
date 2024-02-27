@@ -9,6 +9,9 @@ import "./resizing.css";
 import ImageResizer from "react-image-resizer";
 import Header from "./Header";
 
+// Sidebar.js and SidebarData.js are for Superadmin
+// Sidebar2.js and SidebarData2.js are for Manager
+
 const Nav = styled.div`
   background: #c62828;
   height: 50px;
