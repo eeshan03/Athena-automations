@@ -3,6 +3,9 @@ import * as AiIcons from "react-icons/ai";
 import * as RiIcons from "react-icons/ri";
 import "./resizing.css";
 
+// Sidebar.js and SidebarData.js are for Superadmin
+// Sidebar2.js and SidebarData2.js are for Manager
+
 export const SidebarData = [
   {
     title: "Home",
