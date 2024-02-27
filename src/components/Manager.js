@@ -120,9 +120,9 @@ const Manager = () => {
 
   return (
     <div>
+      <Header />
       <Sidebar2 />
     <div style={{ textAlign: 'center' }}>
-      <Header />
       <div style={{ marginTop: '10px', textAlign: 'right' }}>
         <Link to="/DataAnalysis"><button className='analysis' style={{ fontSize: '16px', padding: '10px' }}>Data Analysis</button></Link>
         <span style={{ margin: '0 10px' }}></span>
