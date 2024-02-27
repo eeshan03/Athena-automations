@@ -98,7 +98,7 @@ app.get('/rpm/current', function (req, res) {
 });
 
 
-// get temperature data from last 24 hours for a specific machine
+// get pressure data from last 24 hours for a specific machine
 app.get('/pressure/past24h/:machineId', function (req, res) {
   const twentyFourHoursAgo = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
   const machineId = req.params.machineId;
@@ -108,9 +108,9 @@ app.get('/pressure/past24h/:machineId', function (req, res) {
   });
 });
 
-// get current temperature for all machines
+// get current pressure for all machines
 app.get('/pressure/current', function (req, res) {
-  dbConn.query('SELECT DeviceId, Pressure1, Pressure2 FROM Pressure WHERE (DeviceId, Stamp) IN (SELECT DeviceId, MAX(Stamp) FROM Pressure GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId, Pressure1, Pressure2, MachineName FROM Pressure WHERE (DeviceId, Stamp) IN (SELECT DeviceId, MAX(Stamp) FROM Pressure GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
