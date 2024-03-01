@@ -1,21 +1,69 @@
+/* Default styles */
+
+/* General styles for responsiveness */
+@media (max-width: 768px) {
+  /* Adjust padding for smaller screens */
+  .dropdown-menu-container {
+    padding-top: 10px;
+  }
+
+  /* Adjust width for smaller screens */
+  .assignbutton,
+  .maintbutton {
+    width: 100%;
+  }
+
+  /* Adjust margin for smaller screens */
+  .settingtable-wrapper button,
+  .operator-wrapper button {
+    margin-left: 5%;
+  }
+
+  /* Adjust width for smaller screens */
+  .nav-bar {
+    width: 60%;
+  }
+
+  /* Adjust width and height for smaller screens */
+  .shifttable-container {
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Further adjustments for smaller screens */
+  .nav-bar {
+    width: 80%;
+  }
+
+  /* Further adjustments for smaller screens */
+  .shifttable-container {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+  }
+}
+
+/* Styles for dropdown menus */
 .dropdown-menu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-
-
-  /* width: fit-content; */
 }
 
+/* Styles for select elements */
 select {
   margin-bottom: 1rem;
   padding: 0.5rem;
   border-radius: 0.25rem;
   border: 1px solid #ccc;
-  /* width: 300px; */
+  width: 100%; /* Occupy full width of container */
 }
 
+/* Styles for buttons */
 button {
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
@@ -24,9 +72,10 @@ button {
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
-  /* width: 100px; */
+  width: 100%; /* Occupy full width of container */
 }
 
+/* Styles for tables */
 table {
 
   padding-top: 30px;
@@ -38,153 +87,127 @@ table {
   padding-bottom: 100px;
   text-align: center;
 }
-
 th,
 td {
   padding: 0.5rem;
   text-align: center;
   border: 5px solid #ccc;
-
-
-  
 }
 
+/* Styles for headings */
 th {
   background-color: #C62828;
   color: #fff;
-  
 }
 
+/* Styles for container holding tables */
 .app-container {
   display: flex;
   justify-content: center;
-  /* justify-content: space-between; */
 }
 
+/* Styles for dropdown menu container */
 .dropdown-menu-container {
-  /* width: 300px; */
   margin-right: 20px;
 }
 
+/* Styles for select container */
 .select-container {
   margin-bottom: 10px;
 }
 
+/* Styles for inline tables */
 .table {
   display: inline-block;
   vertical-align: top;
   margin-left: 20px;
-
-
+  overflow-x: auto; /* Add horizontal scrolling */
 }
 
+/* Styles for operator section */
 .Operator {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-
-    .CurrentDateTime {
-        font-size: 24px;
-        text-align: center;
-        margin-top: 100px;
-      }
-
-    th {
-    border-bottom: 1px solid black;
-    }
-    
-    td {
-    text-align: center;
-    }
-
-    .assignbutton{
-      justify-content: space-between;
-      margin-bottom: 20px;
-      height: 40px;
-      width: 300px;
-      display : flex;
-      font-size: 17px;
-      align-items: center;
-      font-family :Verdana, Geneva, Tahoma, sans-serif;
-    }
-
-    .maintbutton{
-      justify-content: space-between;
-      margin-bottom: 20px;
-      height: 40px;
-      width: 300px;
-      display : flex;
-      font-size: 17px;
-      align-items: center;
-      font-family :Verdana, Geneva, Tahoma, sans-serif;
-    }
-  
-.optable{
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.ophead{
-  font-size: 20px; /* Adjust the font size as desired */
-    font-weight: bold; /* Set the font weight to bold */
-    color: #863d3d; /* Set the color of the heading text */
-    margin: 10px 0;
-    font-family :Verdana, Geneva, Tahoma, sans-serif;
+/* Styles for current date time */
+.CurrentDateTime {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 100px;
 }
 
+/* Styles for operator tables */
+.optable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ophead {
+  font-size: 20px; /* Adjust the font size as desired */
+  font-weight: bold; /* Set the font weight to bold */
+  color: #863d3d; /* Set the color of the heading text */
+  margin: 10px 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Styles for shifttable */
 .shifttable-wrapper {
   position: relative;
   z-index: 1;
 }
 
-.settingtable-wrapper button{
-  padding: 2px;
-  width: 150px;
-  font-size: 20px;
-  margin: 10px;
-  margin-left: 10%;
-}
-.shifttable-button{
-  color: white;
-}
+.settingtable-wrapper button,
 .operator-wrapper button {
   padding: 2px;
   width: 150px;
   font-size: 20px;
   margin: 10px;
-  margin-left: 90%;
 }
-.nav-bar{
+
+/* Styles for shifttable button */
+.shifttable-button {
+  color: white;
+}
+
+/* Styles for navigation bar */
+.nav-bar {
   height: 50px;
   background-color: #C62828;
-  margin-left: 3px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 1%;
   width: 35%;
   border-radius: 10px;
 }
 
+/* Styles for child div 1 */
 .child-div1 {
   display: flex;
 }
-.div{
+
+/* Styles for div */
+.div {
   display: flex;
   justify-content: space-between;
 }
 
+/* Styles for child div */
 .child-div {
   width: 30%;
   margin-top: 1%;
 }
 
+/* Styles for shifttable container */
 .shifttable-container {
   position: absolute;
   top: 50%;
-  right: calc(100% + 10px); /* Adjust the distance from the button */
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
   padding: 20px;
   border-radius: 8px;
@@ -198,41 +221,11 @@ th {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   background-color: rgb(255, 255, 255);
-  /* width: 300px; */
 }
 
-  .shifttable-button.hovered + .shifttable-container {
-    opacity: 1;
-    top: calc(100% + 10px);
-    transition-delay: 10s;
-  }
-
-/* Updated
-.shifttable-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
+/* Transition for shifttable button */
+.shifttable-button.hovered + .shifttable-container {
+  opacity: 1;
+  top: calc(100% + 10px);
+  transition-delay: 10s;
 }
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}*/
