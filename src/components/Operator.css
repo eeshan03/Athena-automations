@@ -72,7 +72,6 @@ button {
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
-  width: 100%; /* Occupy full width of container */
 }
 
 /* Styles for tables */
