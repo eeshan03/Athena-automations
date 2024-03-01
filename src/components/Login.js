@@ -73,11 +73,8 @@ function Login() {
             <h5 style={{ color: '#FC2929', marginTop: '10px', textAlign: 'center' }}>{loginStatus}</h5>
             <button className="loginbtn" type="submit" onClick={login}>Login</button>
           </div>
-          <div className="right">
-            <div className="right-text">
-            </div>
-            <div className="right-inductor"><img src="src\images\mainbck.jpg" alt="" /></div>
-          </div>
+          {/* <div className="right"> */}
+          {/* </div> */}
         </div>
       </div>
     </>
@@ -85,3 +82,4 @@ function Login() {
 }
 
 export default Login;
+
