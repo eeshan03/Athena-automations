@@ -1,338 +1,206 @@
+import React, { useState, useEffect } from "react";
 import Chart from "react-google-charts";
 import Axios from "axios";
-import React, { useState, useEffect } from "react";
 import Sidebar from "./SideBar";
-import Dropdown from "./Dropdown";
 import "./chartstyle.css";
 
 function Pressure() {
   const [currentPressureData, setCurrentPressureData] = useState([]);
-  const [past24HPressureData, setPast24HpressureData] = useState([]);
-  const [past24HPressure2Data, setPast24HpressureData1] = useState([]);
-  const [selectedMachines, setSelectedMachines] = useState([]);
-  const [showPast24HChart, setShowPast24HChart] = useState(false);
-  const [showPast24HChart1, setShowPast24HChart1] = useState(false);
-  const [deviceDatapressure, setDeviceDatapressure] = useState([]);
+  const [selectedMachine, setSelectedMachine] = useState(null);
+  const [deviceDataPressure, setDeviceDataPressure] = useState({});
+  const [allMachines, setAllMachines] = useState([]);
 
   useEffect(() => {
-    fetchCurrentPresure();
+    fetchCurrentPressure();
   }, []);
 
-  const fetchCurrentPresure = async () => {
+  const fetchCurrentPressure = async () => {
     const apilink = "http://localhost:3004/pressure/current";
     const response = await Axios.get(apilink);
-    const tempData = response.data.map((item) => ({
+    const pressureData = response.data.map((item) => ({
       machineId: item.DeviceId.toString(),
       machineName: item.MachineName.toString(),
-      temp: item.Pressure1,
-      temp1: item.Pressure2,
+      temp1: item.Pressure1,
+      temp2: item.Pressure2,
     }));
-    console.log("Current presssure data has been received!");
-    console.log(tempData);
-    setCurrentPressureData(tempData);
-    fetchDeviceName(tempData[0].machineId);
+
+    setCurrentPressureData(pressureData);
+    setAllMachines(pressureData); // Set all machines here
+
+    if (pressureData.length > 0) {
+      fetchDeviceName(pressureData[0].machineId, pressureData[0].machineName);
+      setSelectedMachine(pressureData[0].machineId);
+    }
   };
 
   const fetchDeviceName = async (machineId, machineName) => {
     const apilink = `http://localhost:3004/device/${machineId}`;
     const response = await Axios.get(apilink);
-    const Data = response.data.map((item) => ({
-      Device: item.Machine ? item.Machine.toString() : `${machineName}`,
-    }));
-    console.log(Data);
 
-    setDeviceDatapressure(Data);
-  };
-
-  const fetchPast24HPressure = async (machineId, machineName) => {
-    const apilink = `http://localhost:3004/pressure/past24h/${machineId}`;
-    const response = await Axios.get(apilink);
-    const temps = response.data;
-    console.log(
-      `Past 24-hour presssure for DeviceId ${machineId} have been received!`
-    );
-    console.log(temps);
-    let data = [["Time", "Pressure"]];
-    temps.forEach((temp) => {
-      data.push([new Date(temp.Stamp), temp.Pressure1]);
-    });
-    setPast24HpressureData((prevData) => [
-      ...prevData,
-      { machineId, machineName, data },
-    ]);
-  };
-
-  const handleMachineClick = (machineId) => {
-    if (selectedMachines.includes(machineId)) {
-      // If the machine is already selected, remove it from the selectedMachines array
-      setSelectedMachines((prevMachines) =>
-        prevMachines.filter((id) => id !== machineId)
-      );
-      setPast24HpressureData((prevData) =>
-        prevData.filter((data) => data.machineId !== machineId)
-      );
+    if (response.data.length > 0) {
+      const updatedDeviceData = { ...deviceDataPressure };
+      updatedDeviceData[machineId] = response.data[0].Machine || machineName;
+      setDeviceDataPressure(updatedDeviceData);
     } else {
-      // If the machine is not selected, update the selectedMachines array with only the current machineId
-      setSelectedMachines([machineId]);
-      setPast24HpressureData([]);
-      fetchPast24HPressure(machineId);
+      console.error(`No data found for machineId ${machineId}`);
     }
-    setShowPast24HChart(true);
   };
 
-  const fetchPast24HPressure2 = async (machineId, machineName) => {
-    const apilink = `http://localhost:3004/pressure/past24h/${machineId}`;
-    const response = await Axios.get(apilink);
-    const temps = response.data;
-    console.log(
-      `Past 24-hour presssure for DeviceId ${machineId} have been received!`
-    );
-    console.log(temps);
-    let data2 = [["Time", "Pressure2"]];
-    temps.forEach((temp) => {
-      data2.push([new Date(temp.Stamp), temp.Pressure2]);
-    });
-    console.log(data2);
-    setPast24HpressureData1((prevData) => [
-      ...prevData,
-      { machineId, machineName, data2 },
-    ]);
-  };
+  const handleMachineChange = async (machineId, machineName) => {
+    try {
+      setSelectedMachine(machineId);
+      console.log(`Selected machine: ${machineName} (ID: ${machineId})`);
+      await fetchDeviceName(machineId, machineName);
+      console.log("Device data fetched successfully");
 
-  const handleMachineClick1 = (machineId) => {
-    if (selectedMachines.includes(machineId)) {
-      // If the machine is already selected, remove it from the selectedMachines array
-      setSelectedMachines((prevMachines) =>
-        prevMachines.filter((id) => id !== machineId)
+      // Fetch current pressure for the selected machine
+      const apilink = `http://localhost:3004/pressure/current`;
+      const response = await Axios.get(apilink);
+      const pressureData = response.data.find(
+        (item) => item.DeviceId === machineId
       );
-      setPast24HpressureData1((prevData) =>
-        prevData.filter((data2) => data2.machineId !== machineId)
-      );
-    } else {
-      // If the machine is not selected, update the selectedMachines array with only the current machineId
-      setSelectedMachines([machineId]);
-      setPast24HpressureData1([]);
-      fetchPast24HPressure2(machineId);
+
+      if (pressureData) {
+        // Update the current pressure data state
+        setCurrentPressureData([
+          {
+            machineId: pressureData.DeviceId,
+            machineName: pressureData.MachineName,
+            temp1: pressureData.Pressure1,
+            temp2: pressureData.Pressure2,
+          },
+        ]);
+      } else {
+        console.error(
+          `No current pressure data found for machineId ${machineId}`
+        );
+        setCurrentPressureData([]); // Clear the current pressure data
+      }
+    } catch (error) {
+      console.error("Error handling machine change:", error);
     }
-    setShowPast24HChart1(true);
   };
 
   return (
     <>
       <Sidebar />
-      <Dropdown onSelect={handleMachineClick} />
-      <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+
+      <div className="pressure-data">
         <h1 style={{ fontSize: "20px", color: "blue" }}>Pressure Analysis</h1>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {currentPressureData.map((item) => (
-            <div
-              key={item.machineId}
-              style={{ margin: "10px", cursor: "pointer" }}
-              onClick={() => handleMachineClick(item.machineId)}
-            >
-              {deviceDatapressure.map((val) => (
-                <div key={val.Device} style={{ margin: "5px" }}>
-                  <Chart
-                    width={200}
-                    height={200}
-                    chartType="Gauge"
-                    loader={<div>Loading Chart</div>}
-                    data={[
-                      ["Label", "Value"],
-                      [val.Device, parseFloat(item.temp)],
-                    ]}
-                    options={{
-                      greenFrom: 0,
-                      greenTo: 250, // Adjust this value based on your pressure range
-                      redFrom: 450, // Adjust this value based on your pressure range
-                      redTo: 500,
-                      yellowFrom: 250, // Adjust this value based on your pressure range
-                      yellowTo: 450, // Adjust this value based on your pressure range
-                      minorTicks: 5, // Adjust this value based on your requirements
-                      majorTicks: ["0", "100", "200", "300", "400", "500"],
-                      min: 0,
-                      max: 500,
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                    chartEvents={[
-                      {
-                        eventName: "ready",
-                        callback: ({ chartWrapper }) => {
-                          const chartElement = chartWrapper
-                            .getChart()
-                            .getContainer();
-                          chartElement.classList.add("small-machine-id");
-                        },
-                      },
-                    ]}
-                  />
-                </div>
-              ))}
-            </div>
+        <select
+          value={selectedMachine}
+          onChange={(e) =>
+            handleMachineChange(
+              e.target.value,
+              e.target.selectedOptions[0].text
+            )
+          }
+        >
+          {allMachines.map((item) => (
+            <option key={item.machineId} value={item.machineId}>
+              {item.machineName}
+            </option>
           ))}
-        </div>
-        {selectedMachines.length > 0 && showPast24HChart && (
-          <div style={{ marginTop: "20px" }}>
-            {past24HPressureData.map((data) => (
-              <div key={data.machineId} style={{ marginBottom: "20px" }}>
-                {deviceDatapressure.map((val) => (
-                  <div key={val.Device} style={{ marginBottom: "10px" }}>
-                    <Chart
-                      width={700}
-                      height={400}
-                      chartType="LineChart"
-                      loader={<div>Loading Chart</div>}
-                      data={data.data}
-                      options={{
-                        title: `Pressure over the past 24 hours (DeviceId: ${val.Device}})`,
-                        titleTextStyle: {
-                          color: "#388e3c",
-                          fontSize: 24,
-                          bold: true,
-                        },
-                        hAxis: {
-                          title: "Time",
-                          textStyle: {
-                            color: "#000000",
-                            fontSize: 16,
-                            bold: true,
-                          },
-                        },
-                        vAxis: {
-                          title: "Pressure",
-                          textStyle: {
-                            color: "#000000",
-                            fontSize: 16,
-                            bold: true,
-                          },
-                          gridlines: {
-                            color: "#EEE",
-                            count: 5,
-                          },
-                        },
-                        legend: { position: "none" },
-                        colors: ["#f44336"],
-                        animation: {
-                          duration: 1000,
-                          easing: "out",
-                          startup: true,
-                        },
-                        tooltip: { trigger: "both" },
-                      }}
-                      rootProps={{ "data-testid": "1" }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
-        <div style={{ marginTop: "20px" }}>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {currentPressureData.map((item) => (
-              <div
-                key={item.machineId}
-                style={{ margin: "10px", cursor: "pointer" }}
-                onClick={() => handleMachineClick1(item.machineId)}
-              >
-                {deviceDatapressure.map((val) => (
-                  <div key={val.Device} style={{ margin: "5px" }}>
-                    <Chart
-                      width={200}
-                      height={200}
-                      chartType="Gauge"
-                      loader={<div>Loading Chart</div>}
-                      data={[
-                        ["Label", "Value"],
-                        [val.Device, parseFloat(item.temp1)],
-                      ]}
-                      options={{
-                        greenFrom: 0,
-                        greenTo: 250, // Adjust this value based on your pressure range
-                        redFrom: 450, // Adjust this value based on your pressure range
-                        redTo: 500,
-                        yellowFrom: 250, // Adjust this value based on your pressure range
-                        yellowTo: 450, // Adjust this value based on your pressure range
-                        minorTicks: 5, // Adjust this value based on your requirements
-                        majorTicks: ["0", "100", "200", "300", "400", "500"],
-                        min: 0,
-                        max: 500,
-                      }}
-                      rootProps={{ "data-testid": "2" }}
-                      chartEvents={[
-                        {
-                          eventName: "ready",
-                          callback: ({ chartWrapper }) => {
-                            const chartElement = chartWrapper
-                              .getChart()
-                              .getContainer();
-                            chartElement.classList.add("small-machine2-id");
-                          },
-                        },
-                      ]}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          {selectedMachines.length > 0 && showPast24HChart1 && (
-            <div style={{ marginTop: "20px" }}>
-              {past24HPressure2Data.map((data2) => (
-                <div key={data2.machineId} style={{ marginBottom: "20px" }}>
-                  {deviceDatapressure.map((val) => (
-                    <div key={val.Device} style={{ marginBottom: "10px" }}>
-                      <Chart
-                        width={700}
-                        height={400}
-                        chartType="LineChart"
-                        loader={<div>Loading Chart</div>}
-                        data={data2.data2}
-                        options={{
-                          title: `Pressure over the past 24 hours (DeviceId: ${val.Device})`,
-                          titleTextStyle: {
-                            color: "#388e3c",
-                            fontSize: 24,
-                            bold: true,
-                          },
-                          hAxis: {
-                            title: "Time",
-                            textStyle: {
-                              color: "#000000",
-                              fontSize: 16,
-                              bold: true,
-                            },
-                          },
-                          vAxis: {
-                            title: "Pressure",
-                            textStyle: {
-                              color: "#000000",
-                              fontSize: 16,
-                              bold: true,
-                            },
-                            gridlines: {
-                              color: "#EEE",
-                              count: 5,
-                            },
-                          },
-                          legend: { position: "none" },
-                          colors: ["#f44336"],
-                          animation: {
-                            duration: 1000,
-                            easing: "out",
-                            startup: true,
-                          },
-                          tooltip: { trigger: "both" },
-                        }}
-                        rootProps={{ "data-testid": "2" }}
-                      />
-                    </div>
-                  ))}
+        </select>
+
+        {selectedMachine && deviceDataPressure[selectedMachine] ? (
+          <div
+            className="charts-wrapper center-chart"
+            style={{ margin: "10px 0" }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {/* Pressure Chart 1 */}
+              <div style={{ textAlign: "center" }}>
+                <Chart
+                  width={200}
+                  height={200}
+                  chartType="Gauge"
+                  loader={<div>Loading Chart</div>}
+                  data={[
+                    ["Label", "Value"],
+                    [
+                      deviceDataPressure[selectedMachine],
+                      parseFloat(currentPressureData[0].temp1),
+                    ],
+                  ]}
+                  options={{
+                    greenFrom: 0,
+                    greenTo: 250,
+                    redFrom: 450,
+                    redTo: 500,
+                    yellowFrom: 250,
+                    yellowTo: 450,
+                    minorTicks: 5,
+                    majorTicks: ["0", "100", "200", "300", "400", "500"],
+                    min: 0,
+                    max: 500,
+                  }}
+                  rootProps={{ "data-testid": "1" }}
+                  chartEvents={[
+                    {
+                      eventName: "ready",
+                      callback: ({ chartWrapper }) => {
+                        const chartElement = chartWrapper
+                          .getChart()
+                          .getContainer();
+                        chartElement.classList.add("small-machine-id");
+                      },
+                    },
+                  ]}
+                />
+                <div style={{ fontWeight: "bold", marginTop: "10px" }}>
+                  Pressure 1
                 </div>
-              ))}
+              </div>
+
+              {/* Pressure Chart 2 */}
+              <div style={{ textAlign: "center" }}>
+                <Chart
+                  width={200}
+                  height={200}
+                  chartType="Gauge"
+                  loader={<div>Loading Chart</div>}
+                  data={[
+                    ["Label", "Value"],
+                    [
+                      deviceDataPressure[selectedMachine],
+                      parseFloat(currentPressureData[0].temp2),
+                    ],
+                  ]}
+                  options={{
+                    greenFrom: 0,
+                    greenTo: 250,
+                    redFrom: 450,
+                    redTo: 500,
+                    yellowFrom: 250,
+                    yellowTo: 450,
+                    minorTicks: 5,
+                    majorTicks: ["0", "100", "200", "300", "400", "500"],
+                    min: 0,
+                    max: 500,
+                  }}
+                  rootProps={{ "data-testid": "2" }}
+                  chartEvents={[
+                    {
+                      eventName: "ready",
+                      callback: ({ chartWrapper }) => {
+                        const chartElement = chartWrapper
+                          .getChart()
+                          .getContainer();
+                        chartElement.classList.add("small-machine-id");
+                      },
+                    },
+                  ]}
+                />
+                <div style={{ fontWeight: "bold", marginTop: "10px" }}>
+                  Pressure 2
+                </div>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div>No data available for the selected machine</div>
+        )}
       </div>
     </>
   );
