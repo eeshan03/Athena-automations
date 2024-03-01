@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Soaham',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -42,8 +42,6 @@ app.get('/machineid', function (req, res) {
     return res.json(results);
   });
 });
-
-
 
 app.get('/temperature/past24h/:machineId', function (req, res) {
   const twentyFourHoursAgo = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
