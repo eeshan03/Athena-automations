@@ -32,11 +32,11 @@ function Flow() {
 
   };
 
-  const fetchDeviceName = async (machineId) => {
+  const fetchDeviceName = async (machineId, machineName) => {
     const apilink = `http://localhost:3004/device/${machineId}`;
     const response = await Axios.get(apilink);
     const Data = response.data.map((item) => ({
-      Device: item.Machine.toString(),
+      Device: item.Machine ? item.Machine.toString() : `${machineName}`,
     }));
     console.log(Data);
     

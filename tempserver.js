@@ -43,8 +43,6 @@ app.get('/machineid', function (req, res) {
   });
 });
 
-
-
 app.get('/temperature/past24h/:machineId', function (req, res) {
   const twentyFourHoursAgo = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
   const machineId = req.params.machineId;
@@ -116,27 +114,23 @@ app.get('/pressure/current', function (req, res) {
   });
 });
 
-
-
-
 app.get('/vibration/sensor1', function (req, res) {
-  dbConn.query('SELECT DeviceID , mean_x,mean_y,mean_z FROM LongTermVibrationSensor1 WHERE (DeviceID, currenttime) IN (SELECT DeviceID, MAX(currenttime) FROM LongTermVibrationSensor1 GROUP BY DeviceID) ORDER BY DeviceID', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId , mean_x, mean_y, mean_z, mean_combined MachineName FROM VibrationSensor1 WHERE (DeviceId, currenttime) IN (SELECT DeviceId, MAX(currenttime) FROM VibrationSensor1 GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
 });
 
 app.get('/vibration/sensor2', function (req, res) {
-  dbConn.query('SELECT DeviceID , mean_x1,mean_y1,mean_z1 FROM LongTermVibrationSensor2 WHERE (DeviceID, currenttime) IN (SELECT DeviceID, MAX(currenttime) FROM LongTermVibrationSensor2 GROUP BY DeviceID) ORDER BY DeviceID', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId , mean_x1,mean_y1,mean_z1 FROM LongTermVibrationSensor2 WHERE (DeviceID, currenttime) IN (SELECT DeviceID, MAX(currenttime) FROM LongTermVibrationSensor2 GROUP BY DeviceID) ORDER BY DeviceID', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
 });
 
-
 app.get('/vibration/sensor1/:machineId', function (req, res) {
   const machineId = req.params.machineId;
-  dbConn.query(`SELECT * FROM LongTermVibrationSensor1 WHERE  DeviceID = '${machineId}'`, function (error, results, fields) {
+  dbConn.query(`SELECT * FROM VibrationSensor1 WHERE  DeviceId = '${machineId}'`, function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });

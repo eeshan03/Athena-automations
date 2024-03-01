@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion/dist/framer-motion';
-import RadarChart from 'react-svg-radar-chart';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion/dist/framer-motion";
+import RadarChart from "react-svg-radar-chart";
 import {
   BarChart,
   Bar,
@@ -9,10 +9,88 @@ import {
   CartesianGrid,
   Legend,
   Tooltip,
-} from 'recharts';
-import Sidebar from './SideBar';
+} from "recharts";
+import Axios from "axios";
+import Sidebar from "./SideBar";
 
 const Home = () => {
+  const [combinedData, setCombinedData] = useState([]);
+
+  useEffect(() => {
+    fetchCombinedData();
+  }, []);
+
+  const fetchCombinedData = async () => {
+    try {
+      const tempResponse = await Axios.get(
+        "http://localhost:3004/temperature/current"
+      );
+      const pressureResponse = await Axios.get(
+        "http://localhost:3004/pressure/current"
+      );
+      const vibration1Response = await Axios.get(
+        "http://localhost:3004/vibration/sensor1"
+      );
+      const vibration2Response = await Axios.get(
+        "http://localhost:3004/vibration/sensor2"
+      );
+
+      const tempData = tempResponse.data.map((item) => ({
+        machineId: item.DeviceId ? item.DeviceId.toString() : '',
+        machineName: item.MachineName ? item.MachineName.toString() : '',
+        temp: item.Temp,
+      }));
+      
+      const pressureData = pressureResponse.data.map((item) => ({
+        machineId: item.DeviceId ? item.DeviceId.toString() : '',
+        machineName: item.MachineName ? item.MachineName.toString() : '',
+        pressure: item.Pressure1,
+      }));      
+
+      const vibration1Data = vibration1Response.data.map((item) => ({
+        machineId: item.DeviceId.toString(),
+        machineName: item.MachineName ? item.MachineName.toString() : '',
+        vibration1: item.mean_x,
+      }));
+
+      const vibration2Data = vibration2Response.data.map((item) => ({
+        machineId: item.DeviceId.toString(),
+        machineName: item.MachineName ? item.MachineName.toString() : '',
+        vibration2: item.mean_y,
+      }));
+
+      const combined = tempData.map((tempItem) => {
+        const correspondingPressureItem = pressureData.find(
+          (pressureItem) => pressureItem.machineId === tempItem.machineId
+        );
+        const correspondingVibration1Item = vibration1Data.find(
+          (vibration1Item) => vibration1Item.machineId === tempItem.machineId
+        );
+        const correspondingVibration2Item = vibration2Data.find(
+          (vibration2Item) => vibration2Item.machineId === tempItem.machineId
+        );
+        return {
+          machineId: tempItem.machineId,
+          machineName: tempItem.machineName,
+          temp: tempItem.temp,
+          pressure: correspondingPressureItem
+            ? correspondingPressureItem.pressure
+            : 0,
+          vibration1: correspondingVibration1Item
+            ? correspondingVibration1Item.vibration1
+            : 0,
+          vibration2: correspondingVibration2Item
+            ? correspondingVibration2Item.vibration2
+            : 0,
+        };
+      });
+
+      setCombinedData(combined);
+    } catch (error) {
+      console.error("Error fetching combined data:", error);
+    }
+  };
+
   const data = [
     {
       data: {
@@ -22,7 +100,7 @@ const Home = () => {
         speed: 0.67,
         weight: 0.8,
       },
-      meta: { color: '#82ca9d' },
+      meta: { color: "#82ca9d" },
     },
     {
       data: {
@@ -32,23 +110,23 @@ const Home = () => {
         speed: 0.6,
         weight: 0.7,
       },
-      meta: { color: '#dce775' },
+      meta: { color: "#dce775" },
     },
   ];
 
   const captions = {
-    battery: 'Battery Capacity',
-    design: 'Design',
-    useful: 'Usefulness',
-    speed: 'Speed',
-    weight: 'Weight',
+    battery: "Battery Capacity",
+    design: "Design",
+    useful: "Usefulness",
+    speed: "Speed",
+    weight: "Weight",
   };
 
   return (
     <div>
       <Sidebar />
       <div className="home">
-        <StackBar />
+        <CombinedGraph combinedData={combinedData} />
         <motion.div drag>
           <RadarChart captions={captions} data={data} size={450} />
         </motion.div>
@@ -57,58 +135,25 @@ const Home = () => {
   );
 };
 
-const StackBar = () => {
-  const data = [
-    { name: 'SPM5', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'LMW', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Univ Mil', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Vertex', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Grinding', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Lath', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Drilling', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-    { name: 'Insp Table', Utilisation: 10, UNSp: 20, NoPower: 5, Training: 12, NoTools: 4, Maintanance: 49 },
-  ];
-
+const CombinedGraph = ({ combinedData }) => {
   return (
-    <div className="stackbar-data" style={{ backgroundColor: '#D4DAD7' }}>
-      <motion.div drag>
-        <BarChart width={500} height={500} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+    <div className="combined-graph-container">
+      <h1 style={{ fontSize: "24px", color: "black" }}>Combined Graph</h1>
+      <div className="combined-graph">
+        <BarChart width={800} height={400} data={combinedData}>
           <CartesianGrid />
-          <XAxis dataKey="name" fontSize={10} />
+          <XAxis dataKey="machineName" fontSize={10} />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="Utilisation" stackId="a" fill="#8884d8" />
-          <Bar dataKey="UNSp" stackId="a" fill="#82ca9d" />
-          <Bar dataKey="NoPower" stackId="a" fill="#ff8a65" />
-          <Bar dataKey="Training" stackId="a" fill="#79addc" />
-          <Bar dataKey="NoTools" stackId="a" fill="#e8a598" />
-          <Bar dataKey="Maintenance" stackId="a" fill="#87bc45" />
+          <Bar dataKey="temp" stackId="a" fill="#8884d8" />
+          <Bar dataKey="pressure" stackId="a" fill="#82ca9d" />
+          <Bar dataKey="vibration1" stackId="a" fill="#ffcc00" />
+          <Bar dataKey="vibration2" stackId="a" fill="#ff6600" />
         </BarChart>
-      </motion.div>
+      </div>
     </div>
   );
 };
-
-class BarData extends React.Component {
-  render() {
-    const data = [
-      { name: 'Jan', Temperature: 50, fill: 'purple' },
-      { name: 'Feb', Temperature: 80, fill: 'darkblue' },
-      { name: 'March', Temperature: 65, fill: 'yellow' },
-      { name: 'April', Temperature: 100, fill: 'darkred' },
-    ];
-
-    return (
-      <div className="bar-data">
-        <BarChart width={300} height={300} data={data}>
-          <Bar dataKey="Temperature" />
-          <XAxis dataKey="name" fontSize={10} />
-          <YAxis />
-        </BarChart>
-      </div>
-    );
-  }
-}
 
 export default Home;
