@@ -21,6 +21,7 @@ function Temperature() {
     const response = await Axios.get(apilink);
     const tempData = response.data.map((item) => ({
       machineId: item.DeviceId.toString(),
+      machineName: item.machineName,
       temp: item.RPM,
     }));
     console.log("Current temperature data has been received!");

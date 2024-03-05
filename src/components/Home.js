@@ -34,6 +34,9 @@ const Home = () => {
       const vibration2Response = await Axios.get(
         "http://localhost:3004/vibration/sensor2"
       );
+      const rpmResponse = await Axios.get(
+        "http://localhost:3004/rpm/current"
+      )
 
       const tempData = tempResponse.data.map((item) => ({
         machineId: item.DeviceId ? item.DeviceId.toString() : '',
@@ -50,14 +53,20 @@ const Home = () => {
       const vibration1Data = vibration1Response.data.map((item) => ({
         machineId: item.DeviceId.toString(),
         machineName: item.MachineName ? item.MachineName.toString() : '',
-        vibration1: item.mean_x,
+        vibration1: item.mean_combined,
       }));
 
       const vibration2Data = vibration2Response.data.map((item) => ({
         machineId: item.DeviceId.toString(),
         machineName: item.MachineName ? item.MachineName.toString() : '',
-        vibration2: item.mean_y,
+        vibration2: item.mean_combined1,
       }));
+
+      const rpmData = rpmResponse.data.map((item) => ({
+        machineId: item.DeviceId ? item.DeviceId.toString() : '',
+        machineName: item.MachineName ? item.MachineName.toString() : '',
+        temp: item.RPM,
+      }))
 
       const combined = tempData.map((tempItem) => {
         const correspondingPressureItem = pressureData.find(
@@ -68,6 +77,9 @@ const Home = () => {
         );
         const correspondingVibration2Item = vibration2Data.find(
           (vibration2Item) => vibration2Item.machineId === tempItem.machineId
+        );
+        const correspondingRPMItem = rpmData.find(
+          (rpmItem) => rpmItem.machineId === tempItem.machineId
         );
         return {
           machineId: tempItem.machineId,
@@ -81,6 +93,9 @@ const Home = () => {
             : 0,
           vibration2: correspondingVibration2Item
             ? correspondingVibration2Item.vibration2
+            : 0,
+          rpm: correspondingRPMItem
+            ? correspondingRPMItem.temp / 50
             : 0,
         };
       });
@@ -146,10 +161,11 @@ const CombinedGraph = ({ combinedData }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="temp" stackId="a" fill="#8884d8" />
-          <Bar dataKey="pressure" stackId="a" fill="#82ca9d" />
-          <Bar dataKey="vibration1" stackId="a" fill="#ffcc00" />
-          <Bar dataKey="vibration2" stackId="a" fill="#ff6600" />
+          <Bar dataKey="temp" stackId="a" fill="#3498db" />
+          <Bar dataKey="pressure" stackId="a" fill="#2ecc71" />
+          <Bar dataKey="vibration1" stackId="a" fill="#e74c3c" />
+          <Bar dataKey="vibration2" stackId="a" fill="#f39c12" />
+          <Bar dataKey="rpm" stackId="a" fill="#9b59b6" />
         </BarChart>
       </div>
     </div>
