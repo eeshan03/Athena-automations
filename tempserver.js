@@ -122,11 +122,12 @@ app.get('/vibration/sensor1', function (req, res) {
 });
 
 app.get('/vibration/sensor2', function (req, res) {
-  dbConn.query('SELECT DeviceId , mean_x1,mean_y1,mean_z1 FROM LongTermVibrationSensor2 WHERE (DeviceID, currenttime) IN (SELECT DeviceID, MAX(currenttime) FROM LongTermVibrationSensor2 GROUP BY DeviceID) ORDER BY DeviceID', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId, mean_x1, mean_y1, mean_z1, mean_combined1, MachineName FROM VibrationSensor2 WHERE (DeviceId, currenttime) IN (SELECT DeviceId, MAX(currenttime) FROM VibrationSensor2 GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
 });
+
 
 app.get('/vibration/sensor1/:machineId', function (req, res) {
   const machineId = req.params.machineId;
@@ -138,7 +139,22 @@ app.get('/vibration/sensor1/:machineId', function (req, res) {
 
 app.get('/vibration/sensor2/:machineId', function (req, res) {
   const machineId = req.params.machineId;
-  dbConn.query(`SELECT * FROM LongTermVibrationSensor2 WHERE  DeviceID = '${machineId}'`, function (error, results, fields) {
+  dbConn.query(`SELECT * FROM VibrationSensor2 WHERE  DeviceId = '${machineId}'`, function (error, results, fields) {
+    if (error) throw error;
+    return res.send(JSON.stringify(results));
+  });
+});
+
+app.get('/vibration/current', function (req, res) {
+  dbConn.query('SELECT DeviceId, Mean_X, Mean_Y, Mean_Z, MachineName FROM VibrationSensor1 WHERE (DeviceId, currenttime) IN (SELECT DeviceId, MAX(currenttime) FROM VibrationSensor1 GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
+    if (error) throw error;
+    return res.send(JSON.stringify(results));
+  });
+});
+
+app.get('/vibration/:machineId', function (req, res) {
+  const machineId = req.params.machineId;
+  dbConn.query(`SELECT * FROM VibrationSensor1 WHERE DeviceId = '${machineId}'`, function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
