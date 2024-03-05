@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Soaham',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -40,6 +40,19 @@ app.get('/machineid', function (req, res) {
   dbConn.query('SELECT DeviceId FROM Machines', function (error, results, fields) {
     if (error) throw error;
     return res.json(results);
+  });
+});
+
+app.get('/machinename/:machineId', function (req, res) {
+  const machineId = req.params.machineId;
+  dbConn.query(`SELECT MachineName FROM Machines WHERE DeviceId = '${machineId}'`, function (error, results, fields) {
+    if (error) throw error;
+
+    if (results.length > 0) {
+      return res.send(JSON.stringify(results[0]));
+    } else {
+      return res.send({ error: true, message: `No machine found for DeviceId ${machineId}` });
+    }
   });
 });
 
