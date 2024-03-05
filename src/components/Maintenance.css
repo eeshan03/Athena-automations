@@ -1,41 +1,45 @@
-.maintenance-data {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
-  height: 400px;
-  width : 250px;
-  font-size: 20px;
-  position: relative;
-}
-
+/* Base styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Styles for maintenance data container */
+.maintenance-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+  padding-top: 20px;
+  height: 400px;
+  width: 100%; /* Adjust width to occupy full width of container */
+  max-width: 600px; /* Optional: Add a maximum width */
+  font-size: 20px;
+  position: relative;
+  margin: 0 auto; /* Center container horizontally */
+}
+
+/* Styles for current maintenance */
 .currentmain {
   display: flex;
   justify-content: center;
 }
 
+/* Styles for maintenance table */
 .maintenancetable {
   display: inline-block;
   vertical-align: top;
   margin-left: 20px;
+  align-self: center;
+  overflow-x: auto;
+  max-width: calc(100% - 40px); /* Adjust maximum width */
 }
 
-/* .input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-} */
-
+/* Styles for input box */
 .input-box {
   margin-bottom: 20px;
-  width: 300px;
+  width: 100%; /* Adjust width to occupy full width of container */
 }
 
 .input-box label {
@@ -63,7 +67,19 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.mainthead{
-  font-family :Verdana, Geneva, Tahoma, sans-serif
+/* Styles for table headers */
+.mainthead {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center; 
 }
 
+/* Media Query for responsiveness */
+@media only screen and (max-width: 768px) {
+  .maintenancetable {
+    margin-left: 10px; /* Adjust margin for smaller screens */
+  }
+
+  .input-box {
+    margin-bottom: 10px; /* Adjust margin for smaller screens */
+  }
+}
