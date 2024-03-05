@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Soaham',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -115,7 +115,7 @@ app.get('/pressure/current', function (req, res) {
 });
 
 app.get('/vibration/sensor1', function (req, res) {
-  dbConn.query('SELECT DeviceId , mean_x, mean_y, mean_z, mean_combined MachineName FROM VibrationSensor1 WHERE (DeviceId, currenttime) IN (SELECT DeviceId, MAX(currenttime) FROM VibrationSensor1 GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
+  dbConn.query('SELECT DeviceId , mean_x, mean_y, mean_z, mean_combined, MachineName FROM VibrationSensor1 WHERE (DeviceId, currenttime) IN (SELECT DeviceId, MAX(currenttime) FROM VibrationSensor1 GROUP BY DeviceId) ORDER BY DeviceId', function (error, results, fields) {
     if (error) throw error;
     return res.send(JSON.stringify(results));
   });
