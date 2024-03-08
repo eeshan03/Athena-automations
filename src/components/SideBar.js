@@ -9,6 +9,7 @@ import "./resizing.css";
 import ImageResizer from "react-image-resizer";
 import logo from "../images/logo.png";
 import Header from "./Header";
+import "./SideBar.css";
 
 // Sidebar.js and SidebarData.js are for Superadmin
 // Sidebar2.js and SidebarData2.js are for Manager
@@ -61,7 +62,7 @@ const Sidebar = () => {
           <NavIcon to="#">
             <FaIcons.FaBars onClick={showSidebar} />
           </NavIcon>
-          <h1 style={{ textAlign: "center", width: "100%", color: "white" }}>
+          <h1 className="title">
             Welcome to Athena Dashboard
           </h1>
         </Nav>
