@@ -1,201 +1,177 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
 import Chart from "react-google-charts";
+import Axios from "axios";
 import Sidebar from "./SideBar";
-import "./Vibration.css";
+import "./chartstyle.css";
 
 function Vibration() {
+  const [currentVibrationData, setCurrentVibrationData] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
+  const [deviceData, setDeviceData] = useState({});
   const [allMachines, setAllMachines] = useState([]);
-  const [deviceData, setDeviceData] = useState(null);
-  const [past24HVibsData, setPast24HVibsData] = useState([]);
-  const [past24HVibs2Data, setPast24HVibs2Data] = useState([]);
+  const [currentSensor, setCurrentSensor] = useState("sensor1"); // Added state for current sensor
 
   useEffect(() => {
-    fetchMachineList();
+    fetchCurrentVibration();
   }, []);
 
-  const fetchData = async (apilink, setDataCallback) => {
-    try {
-      const response = await Axios.get(apilink);
-      const tempData = response.data.map((item) => ({
-        machineId: item.DeviceId.toString(),
-        meanX: item.mean_x,
-        meanY: item.mean_y,
-        meanZ: item.mean_z,
-      }));
-      setDataCallback(tempData);
-      if (tempData.length > 0) {
-        fetchDeviceName(tempData[0].machineId);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const fetchCurrentVibration = async () => {
+    const apilink = "http://localhost:3004/vibration/current";
+    const response = await Axios.get(apilink);
+    const vibrationData = response.data.map((item) => ({
+      machineId: item.DeviceId.toString(),
+      machineName: item.MachineName.toString(),
+      vibrationX: item.Mean_X || item.mean_x,
+      vibrationY: item.Mean_Y || item.mean_y,
+      vibrationZ: item.Mean_Z || item.mean_z,
+    }));
 
-  const fetchMachineList = async () => {
-    try {
-      const response = await Axios.get(
-        "http://localhost:3004/vibration/current"
+    setCurrentVibrationData(vibrationData);
+    setAllMachines(vibrationData);
+
+    if (vibrationData.length > 0) {
+      fetchDeviceName(
+        vibrationData[0].machineId,
+        vibrationData[0].machineName
       );
-      setAllMachines(response.data);
-    } catch (error) {
-      console.error("Error fetching machine list:", error);
+      setSelectedMachine(vibrationData[0].machineId);
     }
   };
 
-  const fetchDeviceName = async (machineId) => {
-    try {
-      const response = await Axios.get(
-        `http://localhost:3004/device/${machineId}`
-      );
-      setDeviceData(response.data);
-    } catch (error) {
-      console.error("Error fetching device data:", error);
+  const fetchDeviceName = async (machineId, machineName) => {
+    const apilink = `http://localhost:3004/device/${machineId}`;
+    const response = await Axios.get(apilink);
+
+    if (response.data.length > 0) {
+      const updatedDeviceData = { ...deviceData };
+      updatedDeviceData[machineId] =
+        response.data[0].Machine || machineName;
+      setDeviceData(updatedDeviceData);
+    } else {
+      console.error(`No data found for machineId ${machineId}`);
     }
   };
 
-  const fetchPast24HData = async (apilink, setDataCallback) => {
+  const fetchVibrationData = async (sensor, machineId) => {
     try {
+      const apilink = `http://localhost:3004/vibration/all/${sensor}/${machineId}`;
       const response = await Axios.get(apilink);
-      const temps = response.data;
-  
-      console.log("Fetched Data:", temps);
-  
-      const data = temps.map((temp) => ({
-        time: new Date(temp.currenttime),
-        mean_x: parseFloat(temp.mean_x),
-        mean_y: parseFloat(temp.mean_y),
-        mean_z: parseFloat(temp.mean_z),
+      const vibrationData = response.data.map((item) => ({
+        timestamp: item.Stamp, // Assuming "Stamp" is the timestamp column
+        vibrationX:
+          item[`mean_x${sensor === "sensor1" ? "" : "1"}`] ||
+          item[`Mean_X${sensor === "sensor1" ? "" : "1"}`],
+        vibrationY:
+          item[`mean_y${sensor === "sensor1" ? "" : "1"}`] ||
+          item[`Mean_Y${sensor === "sensor1" ? "" : "1"}`],
+        vibrationZ:
+          item[`mean_z${sensor === "sensor1" ? "" : "1"}`] ||
+          item[`Mean_Z${sensor === "sensor1" ? "" : "1"}`],
       }));
-      setDataCallback((prevData) => [...prevData, { machineId: selectedMachine, data }]);
-    } catch (error) {
-      console.error("Error fetching past 24-hour data:", error);
-    }
-  };
-  
-  const fetchPast24HVibs = (machineId) => {
-    const apilink = `http://localhost:3004/vibration/sensor1/${machineId}`;
-    fetchPast24HData(apilink, setPast24HVibsData);
-  };
 
-  const fetchPast24HVibs2 = (machineId) => {
-    const apilink = `http://localhost:3004/vibration/sensor2/${machineId}`;
-    fetchPast24HData(apilink, setPast24HVibs2Data);
-  };
-
-  const handleMachineClick = (machineId) => {
-    setSelectedMachine((prevMachine) =>
-      prevMachine === machineId ? null : machineId
-    );
-    setPast24HVibsData([]);
-    setPast24HVibs2Data([]);
-    fetchPast24HVibs(machineId);
-    fetchPast24HVibs2(machineId);
-  };
-
-  const renderCharts = (data1, data2) => {
-    if (!deviceData || (!data1.length && !data2.length)) {
-      return null; // Return early if no data or device data exists
-    }
-
-    const charts = [];
-
-    const renderChart = (data, color, sensorName) => {
-      return data.map((item) => {
-        const chartData = item.data || []; // Handle empty data cases
-
-        if (!chartData.length) {
-          return null; // Don't render empty charts
-        }
-
-        const chartRows = chartData.map((rowData) => [
-          new Date(rowData.time),
-          rowData.mean_x,
-          rowData.mean_y,
-          rowData.mean_z,
-        ]);
-
-        const chartHeader = ["Time", "X", "Y", "Z"];
-        const chartFormattedData = [chartHeader, ...chartRows];
-
-        return (
-          <div key={item.machineId} className="past-24h-charts">
-            <div className="past-24h-chart">
-              {deviceData && (
-                <div key={deviceData.Device} className="current-temp-chart"> // Use deviceData directly
-                  <Chart
-                    width={700}
-                    height={400}
-                    chartType="LineChart"
-                    loader={<div>Loading Chart</div>}
-                    data={chartFormattedData}
-                    options={{
-                      title: `Vibration for ${sensorName} (DeviceId: ${deviceData.Device})`,
-                      titleTextStyle: { color: "#388e3c", fontSize: 24, bold: true },
-                      hAxis: {
-                        title: "Time",
-                        textStyle: { color: "#000000", fontSize: 20, bold: true },
-                      },
-                      vAxis: {
-                        title: `Vibration`,
-                        textStyle: { color: "#000000", fontSize: 20, bold: true },
-                      },
-                      gridlines: { color: "#EEE", count: 1 },
-                      legend: { position: "none" },
-                      colors: [color],
-                      animation: { duration: 1000, easing: "out", startup: true },
-                      tooltip: { trigger: "both" },
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
+      if (vibrationData.length > 0) {
+        setCurrentVibrationData(vibrationData);
+      } else {
+        console.error(
+          `No vibration data found for ${sensor} and machineId ${machineId}`
         );
-      });
-    };
-
-    charts.push(renderChart(data1, "#008b02", "Sensor 1"));
-    charts.push(renderChart(data2, "#0951cc", "Sensor 2"));
-
-    return charts;
+        setCurrentVibrationData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching vibration data:", error);
+    }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await Axios.get("http://localhost:3004/vibration/current");
-        setAllMachines(response.data);
-      } catch (error) {
-        console.error("Error fetching machine list:", error);
-      }
-    };
+  const handleMachineChange = async (machineId, machineName) => {
+    try {
+      setSelectedMachine(machineId);
+      console.log(`Selected machine: ${machineName} (ID: ${machineId})`);
+      await fetchDeviceName(machineId, machineName);
+      console.log("Device data fetched successfully");
 
-    fetchData();
-  }, []);
-  
+      // Fetch current vibration for the selected machine and the current sensor
+      await fetchVibrationData(currentSensor, machineId);
+
+      // Placeholder for fetching data for Vibration Sensor 2
+      // Uncomment and update the code for Sensor 2 when available
+      // await fetchVibrationData("sensor2", machineId);
+    } catch (error) {
+      console.error("Error handling machine change:", error);
+    }
+  };
+
+  const handleSensorChange = async (selectedSensor) => {
+    try {
+      setCurrentSensor(selectedSensor);
+
+      if (selectedMachine) {
+        // Fetch vibration data for the selected machine and the new sensor
+        await fetchVibrationData(selectedSensor, selectedMachine);
+      }
+    } catch (error) {
+      console.error("Error handling sensor change:", error);
+    }
+  };
 
   return (
     <>
       <Sidebar />
-      <div className="temp-data">
-        <h1 style={{ fontSize: "20px", color: "blue" }}>
-          Vibrational Analysis
+
+      <div className="vibration-data">
+        <h1 style={{ fontSize: "20px", color: "green" }}>
+          Vibration Analysis
         </h1>
         <select
           value={selectedMachine}
-          onChange={(e) => handleMachineClick(e.target.value)}
+          onChange={(e) =>
+            handleMachineChange(
+              e.target.value,
+              e.target.selectedOptions[0].text
+            )
+          }
         >
-          <option value={null}>Select a machine</option>
-          {allMachines.map((machine) => (
-            <option key={machine.DeviceId} value={machine.DeviceId}>
-              {machine.MachineName}
+          {allMachines.map((item) => (
+            <option key={item.machineId} value={item.machineId}>
+              {item.machineName}
             </option>
           ))}
         </select>
-        {renderCharts(past24HVibsData, past24HVibs2Data)}
-
+        <select
+          value={currentSensor}
+          onChange={(e) => handleSensorChange(e.target.value)}
+          style={{ marginTop: "10px" }}
+        >
+          <option value="sensor1">Sensor 1</option>
+          <option value="sensor2">Sensor 2</option>
+        </select>
+        {selectedMachine && deviceData[selectedMachine] ? (
+          <div className="charts-wrapper">
+            {/* Vibration Sensor 1 Chart */}
+            <Chart
+              width={600}
+              height={400}
+              chartType="LineChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                ["Timestamp", "Vibration X", "Vibration Y", "Vibration Z"],
+                ...currentVibrationData.map((data) => [
+                  data.timestamp,
+                  data.vibrationX,
+                  data.vibrationY,
+                  data.vibrationZ,
+                ]),
+              ]}
+              options={{
+                title: `Vibration Analysis - ${currentSensor.toUpperCase()}`,
+                hAxis: { title: "Timestamp" },
+                vAxis: { title: "Vibration" },
+              }}
+              rootProps={{ "data-testid": "1" }}
+            />
+          </div>
+        ) : (
+          <div>No data available for the selected machine</div>
+        )}
       </div>
     </>
   );
