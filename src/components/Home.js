@@ -9,9 +9,13 @@ import {
   CartesianGrid,
   Legend,
   Tooltip,
+  ResponsiveContainer
 } from "recharts";
 import Axios from "axios";
 import Sidebar from "./SideBar";
+import "./Home.css";
+import "./SideBar.css";
+import "./resizing.css";
 
 const Home = () => {
   const [combinedData, setCombinedData] = useState([]);
@@ -221,18 +225,21 @@ const CombinedGraph = ({ combinedData }) => {
     <div className="combined-graph-container">
       <h1 style={{ fontSize: "24px", color: "black" }}>Combined Graph</h1>
       <div className="combined-graph">
-        <BarChart width={800} height={400} data={combinedData}>
-          <CartesianGrid />
-          <XAxis dataKey="machineName" fontSize={10} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="temp" stackId="a" fill="#3498db" />
-          <Bar dataKey="pressure" stackId="a" fill="#2ecc71" />
-          <Bar dataKey="vibration1" stackId="a" fill="#e74c3c" />
-          <Bar dataKey="vibration2" stackId="a" fill="#f39c12" />
-          <Bar dataKey="rpm" stackId="a" fill="#9b59b6" />
-        </BarChart>
+        {/* Wrap your BarChart component with ResponsiveContainer */}
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={combinedData}>
+            <CartesianGrid />
+            <XAxis dataKey="machineName" fontSize={10} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="temp" stackId="a" fill="#3498db" />
+            <Bar dataKey="pressure" stackId="a" fill="#2ecc71" />
+            <Bar dataKey="vibration1" stackId="a" fill="#e74c3c" />
+            <Bar dataKey="vibration2" stackId="a" fill="#f39c12" />
+            <Bar dataKey="rpm" stackId="a" fill="#9b59b6" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
