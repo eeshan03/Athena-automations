@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Soaham',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -32,6 +32,17 @@ const dbConn = mysql.createConnection({
 // connect to database
 dbConn.connect();
 
+
+app.get('/machines', (req, res) => {
+  dbConn.query('SELECT DeviceId, MachineName FROM Machines', (error, results) => {
+    if (error) {
+      console.error('Error fetching machine list:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 
 app.get('/oee', function (req, res) {
   dbConn.query(
