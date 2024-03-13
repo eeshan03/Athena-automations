@@ -1,193 +1,153 @@
+import React, { useState, useEffect } from "react";
 import Chart from "react-google-charts";
 import Axios from "axios";
-import React, { useState, useEffect } from "react";
 import Sidebar from "./SideBar";
-import Dropdown from "./Dropdown";
 import "./chartstyle.css";
 
-function Temperature() {
-  const [currentRpmsData, setCurrentRpmData] = useState([]);
-  const [past24HRpmsData, setPast24HRpmsData] = useState([]);
-  const [selectedMachines, setSelectedMachines] = useState([]);
-  const [showPast24HChart, setShowPast24HChart] = useState(false);
-  const [deviceDatarpm, setDeviceDatarpm] = useState([]);
+function RPM() {
+  const [rpmData, setRpmData] = useState([]);
+  const [selectedMachine, setSelectedMachine] = useState(null);
+  const [deviceData, setDeviceData] = useState({});
+  const [allMachines, setAllMachines] = useState([]);
 
   useEffect(() => {
     fetchCurrentRpm();
+    fetchMachineData(); // Call fetchMachineData when component mounts
   }, []);
 
   const fetchCurrentRpm = async () => {
     const apilink = "http://localhost:3004/rpm/current";
-    const response = await Axios.get(apilink);
-    const tempData = response.data.map((item) => ({
-      machineId: item.DeviceId.toString(),
-      machineName: item.machineName,
-      temp: item.RPM,
-    }));
-    console.log("Current temperature data has been received!");
-    console.log(tempData);
-    setCurrentRpmData(tempData);
-    fetchDeviceName(tempData[0].machineId);
-  };
-
-  const fetchDeviceName = async (machineId, machineName) => {
-    const apilink = `http://localhost:3004/device/${machineId}`;
-    const response = await Axios.get(apilink);
-    const Data = response.data.map((item) => ({
-      Device: item.Machine ? item.Machine.toString() : `${machineName}`,
-    }));
-    console.log(Data);
-
-    setDeviceDatarpm(Data);
-  };
-
-  const fetchPast24HRpms = async (machineId) => {
-    const apilink = `http://localhost:3004/rpm/past24h/${machineId}`;
-    const response = await Axios.get(apilink);
-    const temps = response.data;
-    console.log(
-      `Past 24-hour temperatures for DeviceId ${machineId} have been received!`
-    );
-    console.log(temps);
-    let data = [["Time", "RPM"]];
-    temps.forEach((temp) => {
-      data.push([new Date(temp.Stamp), temp.RPM]);
-    });
-    console.log(data);
-    setPast24HRpmsData((prevData) => [...prevData, { machineId, data }]);
-  };
-
-  const handleMachineClick = (machineId) => {
-    if (selectedMachines.includes(machineId)) {
-      // If the machine is already selected, remove it from the selectedMachines array
-      setSelectedMachines((prevMachines) =>
-        prevMachines.filter((id) => id !== machineId)
-      );
-      setPast24HRpmsData((prevData) =>
-        prevData.filter((data) => data.machineId !== machineId)
-      );
-    } else {
-      // If the machine is not selected, update the selectedMachines array with only the current machineId
-      setSelectedMachines([machineId]);
-      setPast24HRpmsData([]);
-      fetchPast24HRpms(machineId);
+    console.log("Requesting current RPM data from:", apilink); // Log the request URL
+    try {
+      const response = await Axios.get(apilink);
+      const tempData = response.data.map((item) => ({
+        machineId: item.DeviceId.toString(),
+        rpm: item.RPM,
+      }));
+  
+      if (tempData.length > 0) {
+        console.log("Current RPM data has been received!");
+        console.log(tempData);
+        setRpmData(tempData);
+        setSelectedMachine(tempData[0].machineId); // Select the first machine by default
+      } else {
+        console.error("No current RPM data found.");
+      }
+    } catch (error) {
+      console.error("Error fetching current RPM data:", error);
     }
-    setShowPast24HChart(true);
   };
+  
+
+  const fetchMachineData = async () => {
+    try {
+      const response = await Axios.get("http://localhost:3004/machinesRPM");
+      console.log("Machine data received:", response.data); // Log the machine data
+      setAllMachines(response.data); // Set machine data to allMachines state
+    } catch (error) {
+      console.error("Error fetching machine data:", error);
+    }
+  };
+
+  const fetchDeviceName = async (machineId) => {
+    try {
+      const response = await Axios.get(`http://localhost:3004/device/${machineId}`);
+      console.log("Response from device API:", response.data);
+      if (response.data.length > 0) {
+        return response.data[0].MachineName; // Update to access MachineName property
+      } else {
+        console.error(`No data found for machineId ${machineId}`);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching device name:", error);
+      return null;
+    }
+  };
+  
+  
+  useEffect(() => {
+    if (selectedMachine) {
+      fetchDeviceName(selectedMachine).then((machineName) => {
+        console.log("Device name received:", machineName); // Log the device name
+        if (machineName) {
+          setDeviceData({ ...deviceData, [selectedMachine]: machineName });
+        }
+      });
+    }
+  }, [selectedMachine]);
+
+  const handleMachineChange = (machineId) => {
+    console.log("Selected machine:", machineId); // Log the selected machine
+    setSelectedMachine(machineId);
+  };
+
+  const rpmValue = rpmData.find(function (item) {
+    return item.machineId === selectedMachine;
+  });
+  const rpm = rpmValue ? parseFloat(rpmValue.rpm) : 0;
 
   return (
     <>
       <Sidebar />
-      <Dropdown onSelect={handleMachineClick} />
-      <div className="temp-data">
+
+      <div className="rpm-data">
         <h1 style={{ fontSize: "20px", color: "blue" }}>RPM Analysis</h1>
-        <div className="current-temp-charts">
-          {currentRpmsData.map((item) => (
-            <div
-              key={item.machineId}
-              className="current-temp-chart"
-              onClick={() => handleMachineClick(item.machineId)}
-            >
-              {deviceDatarpm.map((val) => (
-                <div key={val.Device} className="current-temp-chart">
-                  <Chart
-                    width={200}
-                    height={200}
-                    chartType="Gauge"
-                    loader={<div>Loading Chart</div>}
-                    data={[
-                      ["Label", "Value"],
-                      [val.Device, parseFloat(item.temp)],
-                    ]}
-                    options={{
-                      greenFrom: 0,
-                      greenTo: 500,
-                      redFrom: 1200,
-                      redTo: 1500,
-                      yellowFrom: 500,
-                      yellowTo: 1200,
-                      minorTicks: 20,
-                      majorTicks: ["0", "1500"],
-                      min: 0,
-                      max: 1500,
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                    chartEvents={[
-                      {
-                        eventName: "ready",
-                        callback: ({ chartWrapper }) => {
-                          const chartElement = chartWrapper
-                            .getChart()
-                            .getContainer();
-                          chartElement.classList.add("small-machine-id");
-                        },
-                      },
-                    ]}
-                  />
-                </div>
-              ))}
-            </div>
+        <select
+          value={selectedMachine}
+          onChange={(e) => handleMachineChange(e.target.value)}
+        >
+          {allMachines.map((item) => (
+            <option key={item.DeviceId} value={item.DeviceId}>
+              {item.MachineName}
+            </option>
           ))}
-        </div>
-        {selectedMachines.length > 0 && showPast24HChart && (
-          <div className="past-24h-charts">
-            {past24HRpmsData.map((data) => (
-              <div className="past-24h-chart" key={data.machineId}>
-                {deviceDatarpm.map((val) => (
-                  <div key={val.Device} className="current-temp-chart">
-                    <Chart
-                      width={700}
-                      height={400}
-                      chartType="LineChart"
-                      loader={<div>Loading Chart</div>}
-                      data={data.data}
-                      options={{
-                        title: `Temperature over the past 24 hours (DeviceId: ${val.Device})`,
-                        titleTextStyle: {
-                          color: "#388e3c",
-                          fontSize: 24,
-                          bold: true,
-                        },
-                        hAxis: {
-                          title: "Time",
-                          textStyle: {
-                            color: "#000000",
-                            fontSize: 16,
-                            bold: true,
-                          },
-                        },
-                        vAxis: {
-                          title: "RPM",
-                          textStyle: {
-                            color: "#000000",
-                            fontSize: 16,
-                            bold: true,
-                          },
-                          gridlines: {
-                            color: "#EEE",
-                            count: 5, // display 5 gridlines
-                          },
-                        },
-                        legend: { position: "none" },
-                        colors: ["#f44336"],
-                        animation: {
-                          duration: 1000, // animation duration in milliseconds
-                          easing: "out", // easing function for the animation
-                          startup: true, // animate when the chart first loads
-                        },
-                        tooltip: { trigger: "both" }, // show data points when hovered
-                      }}
-                      rootProps={{ "data-testid": "1" }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
+        </select>
+
+        {selectedMachine && deviceData[selectedMachine] ? (
+          <div className="charts-wrapper center-chart" style={{ margin: "10px 0" }}>
+            <div style={{ textAlign: "center" }}>
+              <Chart
+                width={200}
+                height={200}
+                chartType="Gauge"
+                loader={<div>Loading Chart</div>}
+                data={[
+                  ["Label", "Value"],
+                  [deviceData[selectedMachine], rpm],
+                ]}
+                options={{
+                  greenFrom: 0,
+                  greenTo: 500,
+                  redFrom: 1200,
+                  redTo: 1500,
+                  yellowFrom: 500,
+                  yellowTo: 1200,
+                  minorTicks: 20,
+                  majorTicks: ["0", "1500"],
+                  min: 0,
+                  max: 1500,
+                }}
+                rootProps={{ "data-testid": "1" }}
+                chartEvents={[
+                  {
+                    eventName: "ready",
+                    callback: ({ chartWrapper }) => {
+                      const chartElement = chartWrapper.getChart().getContainer();
+                      chartElement.classList.add("small-machine-id");
+                    },
+                  },
+                ]}
+              />
+              <div style={{ fontWeight: "bold", marginTop: "10px" }}>RPM</div>
+            </div>
           </div>
+        ) : (
+          <div>No data available for the selected machine</div>
         )}
       </div>
     </>
   );
 }
 
-export default Temperature;
+export default RPM;

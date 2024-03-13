@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Soaham',
+  user: 'Dhruv',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -152,6 +152,7 @@ app.get('/rpm/past24h/:machineId', function (req, res) {
   });
 });
 
+
 // get rpm data for past 8 hours for a specific machine
 app.get('/rpm/past8h/:machineId', function (req, res) {
   const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
@@ -172,7 +173,16 @@ app.get('/rpm/pastMonth/:machineId', function (req, res) {
   });
 });
 
+app.get('/machinesRPM', function (req, res) {
+  dbConn.query('SELECT DeviceId, MachineName FROM Machines', function (error, results, fields) {
+    if (error) {
+      console.error("Error fetching machine data:", error);
+      return res.status(500).json({ error: true, message: "Internal server error" });
+    }
 
+    return res.status(200).json(results);
+  });
+});
 
 
 // get current pressure for all machines
