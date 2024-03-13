@@ -19,6 +19,19 @@
   margin: 0 10px 20px 10px;
 }
 
+/* Updated CSS for responsive design */
+.charts-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.charts-wrapper > div {
+  margin: 10px;
+}
+
 .small-machine-id text {
   font-size: 15px;
 }
