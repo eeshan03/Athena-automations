@@ -9,10 +9,6 @@ function Flow() {
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [allMachines, setAllMachines] = useState([]);
 
-  useEffect(() => {
-    fetchDeviceNames();
-  }, []);
-
   const fetchDeviceNames = async () => {
     try {
       const apilink = 'http://localhost:3004/machineid';

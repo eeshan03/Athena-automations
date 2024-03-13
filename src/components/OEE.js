@@ -14,6 +14,18 @@ import "./OEE.css";
 import Sidebar from "./SideBar";
 import axios from "axios";
 
+const CustomLegend = ({ data }) => (
+  <div className="legend-container">
+    {data.map(({ name, fill }) => (
+      <div key={name} className="legend-item">
+        <span className="legend-color" style={{ backgroundColor: fill }} />
+        <span className="legend-label">{name}</span>
+      </div>
+    ))}
+  </div>
+);
+
+
 const OEE = () => {
   const [oeeData, setOEEData] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
@@ -119,23 +131,23 @@ const OEE = () => {
                   <div className="chart-wrapper">
                     <div className="bar-chart-container">
                       <BarChart
-                        width={400} // Decreased width
+                        width={400} 
                         height={300}
                         data={[
                           {
                             name: "Availability",
                             value: data.Availability,
-                            fill: "#8884d8", // Unique color for Availability
+                            fill: "#1f77b4", // Unique color for Availability
                           },
                           {
                             name: "Performance",
                             value: data.Performance,
-                            fill: "#82ca9d", // Unique color for Performance
+                            fill: "#ff7f0e", // Unique color for Performance
                           },
                           {
                             name: "Quality",
                             value: data.Quality,
-                            fill: "#ffc658", // Unique color for Quality
+                            fill: "#2ca02c", // Unique color for Quality
                           },
                         ]}
                         margin={{
@@ -146,11 +158,24 @@ const OEE = () => {
                         }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis
+                          dataKey="name"
+                          interval={0} // Display all labels without overlapping
+                          tick={({ payload }) => (
+                            <text
+                              x={payload.x}
+                              y={payload.y + 10}
+                              fill={payload.fill}
+                              textAnchor="middle"
+                            >
+                              {payload.value}
+                            </text>
+                          )}
+                        />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="value" fill="#8884d8" />
+                        <Bar dataKey="value" />
                       </BarChart>
                       <h5
                         className="chart-heading"
@@ -158,6 +183,22 @@ const OEE = () => {
                       >
                         OEE Components
                       </h5>
+                      <CustomLegend
+                        data={[
+                          {
+                            name: "Availability",
+                            fill: "#1f77b4",
+                          },
+                          {
+                            name: "Performance",
+                            fill: "#ff7f0e",
+                          },
+                          {
+                            name: "Quality",
+                            fill: "#2ca02c",
+                          },
+                        ]}
+                      />
                     </div>
                   </div>
                 </div>
