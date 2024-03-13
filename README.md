@@ -1,13 +1,13 @@
 # Getting Started with Create React App
 
-##Steps:
+## Steps:
 1. Make a new folder
 2. In that new folder, open VS Code terminal and copy the below command:
     git clone https://github.com/eeshan03/Athena-automations.git
 3. After cloning the project, change your name from user: "Soaham" to user: "your-name"
 4. Then in terminal execute: npm install --legacy-peer-deps
 5. Then npm start
-##Project will run successfully!!!
+## Project will run successfully!!!
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
