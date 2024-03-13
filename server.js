@@ -3,7 +3,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
-const pass = process.env.PASS;
+const PASS = process.env.PASS;
 
 const app = express();
 app.use(express.json());
@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "freeplay.cha@gmail.com",
-    pass: pass,
+    pass: PASS,
   },
 });
 
