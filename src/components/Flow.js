@@ -3,6 +3,7 @@ import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Sidebar from './SideBar';
 import './chartstyle.css';
+import './Flow.css';
 
 function Flow() {
   const [currentFlowData, setCurrentFlowData] = useState([]);

@@ -35,3 +35,42 @@
 .small-machine-id text {
   font-size: 15px;
 }
+.rework .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align charts vertically */
+}
+
+.rework .container > div {
+  margin: 10px;
+  width: 100%; /* Occupy full width of container */
+}
+
+/* Adjust chart width for responsiveness */
+.rework .container .recharts-wrapper {
+  width: 100%;
+}
+
+/* Optional: Adjust sidebar width for responsiveness */
+.sidebar {
+  width: 20%; /* Adjust width according to your layout */
+}
+
+/* Optional: Adjust heading width for responsiveness */
+h1 {
+  width: 100%;
+  text-align: center; /* Center align heading */
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  .rework .container {
+    flex-direction: column;
+    align-items: stretch; /* Stretch charts vertically */
+  }
+
+  /* Optional: Enable scrolling for smaller screens */
+  .rework .container > div {
+    overflow-x: auto;
+  }
+}
