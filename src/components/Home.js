@@ -212,9 +212,7 @@ const Home = () => {
         </select>
       <div className="home">
         <CombinedGraph combinedData={combinedData} />
-        <motion.div drag>
-          <RadarChart captions={captions} data={data} size={450} />
-        </motion.div>
+        <RadarChart captions={captions} data={data} size={450} />
       </div>
     </div>
   );
