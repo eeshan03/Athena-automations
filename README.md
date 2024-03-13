@@ -4,7 +4,7 @@
 1. Make a new folder
 2. In that new folder, open VS Code terminal and copy the below command:
     git clone https://github.com/eeshan03/Athena-automations.git
-3. After cloning the project, change your name from user: "Soaham" to user: "your-name"
+3. After cloning the project, change your name in server files as user: 'your-device-name'
 4. Then in terminal execute: npm install --legacy-peer-deps
 5. Then npm start
 ## Project will run successfully!!!
