@@ -148,7 +148,7 @@ function Vibration() {
           <div className="charts-wrapper">
             {/* Vibration Sensor 1 Chart */}
             <Chart
-              width={600}
+              width={"100%"}
               height={400}
               chartType="LineChart"
               loader={<div>Loading Chart</div>}
