@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // connection configurations
 const dbConn = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Soaham',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -35,7 +35,7 @@ dbConn.connect();
 
 app.get('/oee', function (req, res) {
   dbConn.query(
-    'SELECT t.Machine_ID, t.OEE, t.Parts_produced, t.Parts_rejected, t.Target, t.Availability, t.Performance, t.Quality FROM oee AS t INNER JOIN (SELECT Machine_ID, MAX(Stamp) AS MaxStamp FROM oee GROUP BY Machine_ID) AS latest ON t.Machine_ID = latest.Machine_ID AND t.Stamp = latest.MaxStamp',
+    'SELECT t.DeviceId, t.MachineName, t.oee, t.Parts_produced, t.Parts_rejected, t.Target, t.Availability, t.Performance, t.Quality FROM OEE AS t INNER JOIN (SELECT DeviceId, MachineName, MAX(Stamp) AS MaxStamp FROM OEE GROUP BY DeviceId) AS latest ON t.DeviceId = latest.DeviceId AND t.Stamp = latest.MaxStamp',
     function (error, results, fields) {
       if (error) throw error;
       return res.send(JSON.stringify(results));
@@ -140,7 +140,7 @@ app.post('/addmachine', (req, res) => {
     } else {
       const count = checkResults[0].count;
       if (count > 0) {
-        res.status(400).json({ error: 'Device ID already exists. Please choose a different Device ID.' });
+        res.status(400).json({ error: 'Device Id already exists. Please choose a different Device Id.' });
       } else {
         // If the Device ID doesn't exist, proceed to add the machine
         dbConn.query(addMachineSql, [deviceId, machineName, section], (addError, addResult) => {
