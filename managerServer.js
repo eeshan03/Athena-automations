@@ -10,7 +10,7 @@ app.use(express.json());
 // Create a MySQL connection
 const connection = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Your Device Name',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -28,7 +28,7 @@ connection.connect((err) => {
 // Define the API endpoint to fetch data from the 'dpr' table
 app.get('/api/table', (req, res) => {
   // SQL query to select all rows from the 'dpr' table
-  const query = 'SELECT name, part_no, opn_no, machine FROM dpr';
+  const query = 'SELECT name, DeviceId, opn_no, MachineName FROM dpr';
 
   // Execute the query
   connection.query(query, (error, results) => {
@@ -47,10 +47,10 @@ app.post('/api/table', (req, res) => {
   const data = req.body;
 
   // Prepare the data for insertion
-  const values = data.map((row) => [row.name, row.part_no, row.opn_no, row.machine, row.dateTime, row.parts_produced, row.time_taken]);
+  const values = data.map((row) => [row.name, row.DeviceId, row.opn_no, row.MachineName, row.dateTime, row.parts_produced, row.time_taken]);
 
   // Insert the data into the 'manager_data' table
-  const query = 'INSERT INTO manager_data (name, part_no, opn_no, machine, dateTime, parts_produced, time_taken) VALUES ?';
+  const query = 'INSERT INTO manager_data (name, DeviceId, opn_no, MachineName, dateTime, parts_produced, time_taken) VALUES ?';
 
   // Execute the query
   connection.query(query, [values], (error, results) => {

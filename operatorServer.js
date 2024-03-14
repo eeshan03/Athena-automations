@@ -11,7 +11,7 @@ app.use(express.json());
 
 const connection = mysql.createConnection({
   host: '192.168.1.26',
-  user: 'Dhruv',
+  user: 'Your Device Name',
   password: '1234',
   port: 3306,
   database: 'athena'
@@ -78,7 +78,7 @@ app.post('/api/leave_data', (req, res) => {
 // Define the API endpoint to fetch data from the 'manager_data' table
 app.get('/api/displaytable', (req, res) => {
   // SQL query to select all rows from the 'manager_data' table
-  const query = 'SELECT name, machine_no, opn_no, time_taken, parts_produced, machine FROM manager_data';
+  const query = 'SELECT name, DeviceId, opn_no, time_taken, parts_produced, MachineName FROM manager_data';
 
   // Execute the query
   connection.query(query, (error, results) => {
