@@ -1,6 +1,5 @@
-
 img{
-	width: 100%;
+  width: 100%;
 }
 .page {
     height: 100vh;
@@ -70,7 +69,7 @@ img{
     font-size: 14px;
 }
 .left{
-	/* background: linear-gradient(-45deg, #dcd7e0, #fff); */
+  /* background: linear-gradient(-45deg, #dcd7e0, #fff); */
   background-color: #fff;
 }
 .loginbtn {
@@ -95,11 +94,11 @@ img{
 }
 
 .right {
-	background: url(../images/4.0back.jpg);
+  background: url(../images/4.0back.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-	color: #fff;
-	position: relative;
+  color: #fff;
+  position: relative;
 
   @media (max-width: 800px) {
     .right {
@@ -143,7 +142,3 @@ img{
     padding-right: 7px;
     margin-top: -3px;
 }
-
-
-
-
