@@ -3,6 +3,7 @@ import Chart from "react-google-charts";
 import Axios from "axios";
 import Sidebar from "./SideBar";
 import "./chartstyle.css";
+import "./RPM.css";
 
 function RPM() {
   const [rpmData, setRpmData] = useState([]);
@@ -92,21 +93,27 @@ function RPM() {
       <Sidebar />
 
       <div className="rpm-data">
-        <h1 style={{ fontSize: "20px", color: "blue" }}>RPM Analysis</h1>
-        <select
-          value={selectedMachine}
-          onChange={(e) => handleMachineChange(e.target.value)}
-        >
-          {allMachines.map((item) => (
-            <option key={item.DeviceId} value={item.DeviceId}>
-              {item.MachineName}
-            </option>
-          ))}
-        </select>
+        <div className="centered-element">
+          <h1 style={{ fontSize: "20px", color: "blue", textAlign: "center" }}>RPM Analysis</h1>
+        </div>
 
-        {selectedMachine && deviceData[selectedMachine] ? (
-          <div className="charts-wrapper center-chart" style={{ margin: "10px 0" }}>
-            <div style={{ textAlign: "center" }}>
+        <div className="centered-element">
+          <select
+            value={selectedMachine}
+            onChange={(e) => handleMachineChange(e.target.value)}
+            style={{ width: "200px" }} // Adjust the width of the select element
+          >
+            {allMachines.map((item) => (
+              <option key={item.DeviceId} value={item.DeviceId}>
+                {item.MachineName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="centered-element">
+          {selectedMachine && deviceData[selectedMachine] ? (
+            <div className="charts-wrapper center-chart">
               <Chart
                 width={200}
                 height={200}
@@ -139,12 +146,11 @@ function RPM() {
                   },
                 ]}
               />
-              <div style={{ fontWeight: "bold", marginTop: "10px" }}>RPM</div>
             </div>
-          </div>
-        ) : (
-          <div>No data available for the selected machine</div>
-        )}
+          ) : (
+            <div>No data available for the selected machine</div>
+          )}
+        </div>
       </div>
     </>
   );
