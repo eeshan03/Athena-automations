@@ -1,0 +1,42 @@
+/* RPM.css */
+
+.rpm-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .rpm-data {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .rpm-heading {
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .machine-select {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 100%;
+  }
+  
+  .chart-wrapper {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .no-data {
+    margin-top: 20px;
+    color: #ff0000;
+  }
+  
