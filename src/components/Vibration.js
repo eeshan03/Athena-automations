@@ -30,10 +30,7 @@ function Vibration() {
     setAllMachines(vibrationData);
 
     if (vibrationData.length > 0) {
-      fetchDeviceName(
-        vibrationData[0].machineId,
-        vibrationData[0].machineName
-      );
+      fetchDeviceName(vibrationData[0].machineId, vibrationData[0].machineName);
       setSelectedMachine(vibrationData[0].machineId);
     }
   };
@@ -44,8 +41,7 @@ function Vibration() {
 
     if (response.data.length > 0) {
       const updatedDeviceData = { ...deviceData };
-      updatedDeviceData[machineId] =
-        response.data[0].Machine || machineName;
+      updatedDeviceData[machineId] = response.data[0].Machine || machineName;
       setDeviceData(updatedDeviceData);
     } else {
       console.error(`No data found for machineId ${machineId}`);
@@ -118,32 +114,49 @@ function Vibration() {
       <Sidebar />
 
       <div className="vibration-data">
-        <h1 style={{ fontSize: "20px", color: "green" }}>
-          Vibration Analysis
-        </h1>
-        <select
-          value={selectedMachine}
-          onChange={(e) =>
-            handleMachineChange(
-              e.target.value,
-              e.target.selectedOptions[0].text
-            )
-          }
+        <h1 style={{ fontSize: "20px", color: "green" }}>Vibration Analysis</h1>
+        <div
+          style={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            paddingTop: 20,
+          }}
         >
-          {allMachines.map((item) => (
-            <option key={item.machineId} value={item.machineId}>
-              {item.machineName}
-            </option>
-          ))}
-        </select>
-        <select
-          value={currentSensor}
-          onChange={(e) => handleSensorChange(e.target.value)}
-          style={{ marginTop: "10px" }}
+          <select
+            value={selectedMachine}
+            onChange={(e) =>
+              handleMachineChange(
+                e.target.value,
+                e.target.selectedOptions[0].text
+              )
+            }
+            style={{ width: "200px" }}
+          >
+            {allMachines.map((item) => (
+              <option key={item.machineId} value={item.machineId}>
+                {item.machineName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            paddingTop: 20,
+          }}
         >
-          <option value="sensor1">Sensor 1</option>
-          <option value="sensor2">Sensor 2</option>
-        </select>
+          <select
+            value={currentSensor}
+            onChange={(e) => handleSensorChange(e.target.value)}
+            style={{ marginTop: "10px", width: "200px" }}
+          >
+            <option value="sensor1">Sensor 1</option>
+            <option value="sensor2">Sensor 2</option>
+          </select>
+        </div>
         {selectedMachine && deviceData[selectedMachine] ? (
           <div className="charts-wrapper">
             {/* Vibration Sensor 1 Chart */}

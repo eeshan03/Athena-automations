@@ -27,7 +27,7 @@ const LeaveHistory = () => {
     <div>
       <Sidebar />
       <br />
-      <h2 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Update History</h2>
+      <h2 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Leave Update History</h2>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <table className="table" id="updateHistoryTable">
         <thead>

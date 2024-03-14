@@ -25,7 +25,6 @@ const CustomLegend = ({ data }) => (
   </div>
 );
 
-
 const OEE = () => {
   const [oeeData, setOEEData] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
@@ -68,8 +67,20 @@ const OEE = () => {
       <Sidebar />
       <h1>Overall Equipment Effectiveness</h1>
 
-      <div className="select-dropdown">
-        <select value={selectedMachine} onChange={handleMachineChange}>
+      <div
+        className="select-dropdown"
+        style={{
+          display: "flex",
+          alignContent: "center",
+          justifyContent: "center",
+          paddingTop: 20,
+        }}
+      >
+        <select
+          value={selectedMachine}
+          onChange={handleMachineChange}
+          style={{ width: "200px" }}
+        >
           <option value="">Select Machine</option>
           {machineList.map((machine) => (
             <option key={machine.DeviceId} value={machine.DeviceId}>
@@ -131,7 +142,7 @@ const OEE = () => {
                   <div className="chart-wrapper">
                     <div className="bar-chart-container">
                       <BarChart
-                        width={400} 
+                        width={400}
                         height={300}
                         data={[
                           {

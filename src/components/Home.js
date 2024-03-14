@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Legend,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import Axios from "axios";
 import Sidebar from "./SideBar";
@@ -95,9 +95,7 @@ const Home = () => {
           vibration2Response = await Axios.get(
             "http://localhost:3004/vibration/sensor2/pastMonth/"
           );
-          rpmResponse = await Axios.get(
-            "http://localhost:3004/rpm/pastMonth/"
-          );
+          rpmResponse = await Axios.get("http://localhost:3004/rpm/pastMonth/");
           break;
         default:
           break;
@@ -203,13 +201,19 @@ const Home = () => {
   return (
     <div>
       <Sidebar />
-        <br />
-        <select value={selectedTime} onChange={handleTimeRangeChange}>
+      <br />
+      <div style={{ display: "flex", alignContent: "center", paddingLeft: 50 }}>
+        <select
+          value={selectedTime}
+          onChange={handleTimeRangeChange}
+          style={{ width: "200px" }}
+        >
           <option value="current">Current</option>
           <option value="8hrs">8 hours</option>
           <option value="24hrs">24 hours</option>
           <option value="monthly">Monthly</option>
         </select>
+      </div>
       <div className="home">
         <CombinedGraph combinedData={combinedData} />
         <RadarChart captions={captions} data={data} size={450} />

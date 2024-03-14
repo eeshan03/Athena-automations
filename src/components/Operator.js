@@ -598,9 +598,9 @@ const Operator = () => {
             {data.map((row, index) => (
               <tr key={index}>
                 <td>{row.name}</td>
-                <td>{row.machine_no}</td>
+                <td>{row.DeviceId}</td>
                 <td>{row.opn_no}</td>
-                <td>{row.machine}</td>
+                <td>{row.MachineName}</td>
                 <td>{row.parts_produced}</td>
                 <td>{row.time_taken}</td>
               </tr>

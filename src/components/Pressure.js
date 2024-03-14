@@ -87,21 +87,31 @@ function Pressure() {
 
       <div className="pressure-data">
         <h1 style={{ fontSize: "20px", color: "blue" }}>Pressure Analysis</h1>
-        <select
-          value={selectedMachine}
-          onChange={(e) =>
-            handleMachineChange(
-              e.target.value,
-              e.target.selectedOptions[0].text
-            )
-          }
+        <div
+          style={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            paddingTop: 20,
+          }}
         >
-          {allMachines.map((item) => (
-            <option key={item.machineId} value={item.machineId}>
-              {item.machineName}
-            </option>
-          ))}
-        </select>
+          <select
+            value={selectedMachine}
+            onChange={(e) =>
+              handleMachineChange(
+                e.target.value,
+                e.target.selectedOptions[0].text
+              )
+            }
+            style={{ width: "200px" }}
+          >
+            {allMachines.map((item) => (
+              <option key={item.machineId} value={item.machineId}>
+                {item.machineName}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {selectedMachine && deviceDataPressure[selectedMachine] ? (
           <div

@@ -20,7 +20,7 @@ const DropdownMenu = ({
   return (
     <td>
       <div className="dropdown-menu-container">
-        <select value={selectedOption} onChange={handleOptionChange}>
+        <select value={selectedOption} onChange={handleOptionChange} style={{ width: "200px" }}>
           <option value="">--Select an option--</option>
           {options.map((option) => (
             <option key={option.id} value={option[field]}>
@@ -124,9 +124,9 @@ const Manager = () => {
       <Sidebar2 />
     <div style={{ textAlign: 'center' }}>
       <div style={{ marginTop: '10px', textAlign: 'right' }}>
-        <Link to="/DataAnalysis"><button className='analysis' style={{ fontSize: '16px', padding: '10px' }}>Data Analysis</button></Link>
+        <Link to="/DataAnalysis"><button className='analysis' style={{ fontSize: '16px', padding: 10 }}>Data Analysis</button></Link>
         <span style={{ margin: '0 10px' }}></span>
-        <Link to="/LeaveData"><button className='analysis' style={{ fontSize: '16px', padding: '10px' }}>Leave Data</button></Link>
+        <Link to="/LeaveData"><button className='analysis' style={{ fontSize: '16px', padding: 10, marginRight: 10 }}>Leave Data</button></Link>
       </div>
     </div>
 
@@ -170,12 +170,14 @@ const Manager = () => {
                     id="partsProduced"
                     value={partsProduced}
                     onChange={(e) => setPartsProduced(e.target.value)}
+                    style={{ height: "30px" }}
                   />
                 </td>
                 <td>
                   <select
                     value={timeRequired}
                     onChange={(e) => setTimeRequired(e.target.value)}
+                    style={{ width: "200px" }}
                   >
                     <option value="">--Select an option--</option>
                     {timeOptions.map((option) => (

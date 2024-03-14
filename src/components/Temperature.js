@@ -87,6 +87,7 @@ function Temperature() {
         <h1 style={{ fontSize: "20px", color: "blue" }}>
           Temperature Analysis
         </h1>
+        <div style={{ paddingTop: 20 }}>
         <select
           value={selectedMachine}
           onChange={(e) =>
@@ -95,6 +96,7 @@ function Temperature() {
               e.target.selectedOptions[0].text
             )
           }
+          style={{ width: "200px" }}
         >
           {allMachines.map((item) => (
             <option key={item.machineId} value={item.machineId}>
@@ -102,6 +104,8 @@ function Temperature() {
             </option>
           ))}
         </select>
+
+        </div>
 
         {selectedMachine && deviceData[selectedMachine] ? (
           <div className="charts-wrapper center-chart">

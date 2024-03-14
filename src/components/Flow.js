@@ -83,11 +83,13 @@ function Flow() {
       <Sidebar />
       <div className='flow-data'>
         <h1 style={{ fontSize: '20px', color: 'blue' }}>Flow Analysis</h1>
+        <div style={{ paddingTop: 20 }}>
         <select
           value={selectedMachine ? selectedMachine.machineId : ''}
           onChange={(e) =>
             handleMachineChange(e.target.value)
           }
+          style={{ width: "200px" }}
         >
           {allMachines.map((item) => (
             <option key={item.machineId} value={item.machineId}>
@@ -95,6 +97,7 @@ function Flow() {
             </option>
           ))}
         </select>
+        </div>
 
         {selectedMachine && currentFlowData.length > 0 ? (
           <div className='current-flow-charts'>

@@ -82,13 +82,9 @@ const LeaveManagerData = () => {
     <div>
       <SideBar />
       <button onClick={handleUpdateHistoryClick} style={{ margin: "10px" }}>
-        Update History
+        Leave Update History
       </button>
       <div className="app-container">
-        {/* Use the Link component for navigation */}
-        {/* <Link to="/update-history" style={{ textDecoration: "none" }}>
-          <button style={{ cursor: "pointer" }}>Update History</button>
-        </Link> */}
 
         <table className="table" id="leaveTable">
           <thead>
