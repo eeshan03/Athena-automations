@@ -86,24 +86,13 @@ const Maintenance = () => {
         >
           {/* Input for the number of machines currently under maintenance */}
           <p>
-            Number of Machines currently under Maintenance:
-            <input
-              type="text"
-              value={maintenanceMachines}
-              onChange={() => {}}
-              placeholder=""
-            />
+            Number of Machines currently under Maintenance:{" "}
+            <span>{maintenanceMachines}</span>
           </p>
 
-          {/* Input for the number of machines working well */}
+          {/* Display the number of machines working well */}
           <p>
-            Number of Machines working well:
-            <input
-              type="text"
-              value={workingMachines}
-              onChange={() => {}}
-              placeholder=""
-            />
+            Number of Machines working well: <span>{workingMachines}</span>
           </p>
         </div>
       </div>
